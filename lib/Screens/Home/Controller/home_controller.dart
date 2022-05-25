@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:rubymessanger/MainModel/chat_model.dart';
 
 class HomeController extends GetxController
-    with GetTickerProviderStateMixin {
+    with GetSingleTickerProviderStateMixin {
   late AnimationController animatedIconController;
   RxBool isCollapsed = false.obs;
+
+  RxBool isDark = false.obs;
 
   List<ChatModel> listOfChats = [
     ChatModel(
@@ -70,12 +72,9 @@ class HomeController extends GetxController
     ),
   ];
 
-
-  RxBool isDark = false.obs;
-
   @override
   void onInit() {
-    if(Get.isDarkMode){
+    if (Get.isDarkMode) {
       isDark(true);
     }
     animatedIconController = AnimationController(
@@ -101,15 +100,14 @@ class HomeController extends GetxController
   }
 
   void changeTheme() {
-    if(Get.isDarkMode){
+    if (Get.isDarkMode) {
       Get.changeTheme(ThemeData.light());
       isDark(false);
-    }else{
+    } else {
       Get.changeTheme(ThemeData.dark());
       isDark(true);
     }
     update(['theme']);
-
   }
 
   void selectChat({required ChatModel item}) {

@@ -5,6 +5,8 @@ import 'package:lottie/lottie.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 import '../../Controller/home_controller.dart';
+import 'build_app_bar_widget.dart';
+import 'build_profile_part.dart';
 
 class HomeBackWidget extends StatelessWidget {
   const HomeBackWidget({Key? key, required this.controller}) : super(key: key);
@@ -19,82 +21,65 @@ class HomeBackWidget extends StatelessWidget {
         width: Get.width,
         child: Column(
           children: [
-            _buildAppBar(),
+            BuildAppbarWidget(
+              controller: controller,
+            ),
+            Expanded(
+              child: Container(
+                height: double.maxFinite,
+                width: double.maxFinite,
+                padding: paddingAll6,
+                child: Column(
+                  children: [
+                    BuildProfilePart(
+                      controller: controller,
+                    ),
+                    Divider(),
+                    _buildMenuItem(
+                        icon: Icon(
+                          Icons.settings,
+                        ),
+                        text: 'Setting'),
+                    _buildMenuItem(icon: Icon(Icons.info), text: 'Info'),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildMenuItem({
+    required Widget icon,
+    required String text,
+  }) {
     return Container(
+      margin: paddingSymmetricV2,
       width: Get.width,
-      height: Get.height * .09,
-      padding: paddingAll8,
+      height: Get.width * .1,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          GetBuilder(
-            id: 'theme',
-            init: controller,
-            builder: (ctx)=>GestureDetector(
-              onTap: () {
-                controller.changeTheme();
-              },
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                transitionBuilder: (
-                    widget,
-                    animation,
-                    ) =>
-                    ScaleTransition(
-                      scale: animation,
-                      child: widget,
-                    ),
-                child: (controller.isDark.isTrue)
-                    ? Icon(
-                  Icons.sunny,
-                  color: Colors.yellow.shade600,
-                  key: UniqueKey(),
-                )
-                    : Icon(
-                  Icons.dark_mode,
-                  color: Colors.blueGrey.shade900,
-                  // key: UniqueKey(),
+          Expanded(
+            child: SizedBox(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: AutoSizeText(
+                  text,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                  ),
                 ),
               ),
             ),
           ),
-          // GestureDetector(
-          //   onTap: () {
-          //     controller.changeTheme();
-          //   },
-          //   child: const Icon(Icons.ac_unit),
-          // ),
-          const AutoSizeText(
-            'Ruby',
-            style: TextStyle(
-              fontFamily: 'ruby',
-              fontSize: 20.0,
-              letterSpacing: 4.0,
-              fontWeight: FontWeight.bold,
-            ),
+          const SizedBox(
+            width: 8.0,
           ),
-          GestureDetector(
-            onTap: () {
-              controller.openMenu();
-            },
-            child: GetBuilder(
-              id: 'menu',
-              init: controller,
-              builder: (ctx) => AnimatedIcon(
-                size: 26,
-                icon: AnimatedIcons.menu_close,
-                progress: controller.animatedIconController,
-              ),
-            ),
-          )
+          icon
         ],
       ),
     );
