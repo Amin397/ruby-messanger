@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 import '../../Controller/home_controller.dart';
@@ -34,12 +35,43 @@ class HomeBackWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          GestureDetector(
-            onTap: () {
-              controller.changeTheme();
-            },
-            child: const Icon(Icons.ac_unit),
+          GetBuilder(
+            id: 'theme',
+            init: controller,
+            builder: (ctx)=>GestureDetector(
+              onTap: () {
+                controller.changeTheme();
+              },
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (
+                    widget,
+                    animation,
+                    ) =>
+                    ScaleTransition(
+                      scale: animation,
+                      child: widget,
+                    ),
+                child: (controller.isDark.isTrue)
+                    ? Icon(
+                  Icons.sunny,
+                  color: Colors.yellow.shade600,
+                  key: UniqueKey(),
+                )
+                    : Icon(
+                  Icons.dark_mode,
+                  color: Colors.blueGrey.shade900,
+                  // key: UniqueKey(),
+                ),
+              ),
+            ),
           ),
+          // GestureDetector(
+          //   onTap: () {
+          //     controller.changeTheme();
+          //   },
+          //   child: const Icon(Icons.ac_unit),
+          // ),
           const AutoSizeText(
             'Ruby',
             style: TextStyle(

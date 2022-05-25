@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:rubymessanger/MainModel/chat_model.dart';
 
 class HomeController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+    with GetTickerProviderStateMixin {
   late AnimationController animatedIconController;
   RxBool isCollapsed = false.obs;
 
@@ -16,6 +16,7 @@ class HomeController extends GetxController
       image: 'assets/images/image.jpg',
       lastMessage: 'goftam bia inja',
       seen: true,
+      isSelected: true.obs,
     ),
     ChatModel(
       fromMe: false,
@@ -25,6 +26,7 @@ class HomeController extends GetxController
       image: 'assets/images/image.jpg',
       lastMessage: 'goftam bia inja',
       seen: true,
+      isSelected: false.obs,
     ),
     ChatModel(
       fromMe: true,
@@ -34,6 +36,7 @@ class HomeController extends GetxController
       image: '',
       lastMessage: 'goftam bia inja',
       seen: true,
+      isSelected: false.obs,
     ),
     ChatModel(
       fromMe: true,
@@ -43,6 +46,7 @@ class HomeController extends GetxController
       image: 'assets/images/image.jpg',
       lastMessage: 'goftam bia inja',
       seen: true,
+      isSelected: false.obs,
     ),
     ChatModel(
       fromMe: false,
@@ -52,6 +56,7 @@ class HomeController extends GetxController
       image: '',
       lastMessage: 'goftam bia inja',
       seen: true,
+      isSelected: false.obs,
     ),
     ChatModel(
       fromMe: true,
@@ -61,15 +66,25 @@ class HomeController extends GetxController
       image: 'assets/images/image.jpg',
       lastMessage: 'goftam bia inja',
       seen: true,
+      isSelected: false.obs,
     ),
   ];
 
+
+  RxBool isDark = false.obs;
+
   @override
   void onInit() {
+    if(Get.isDarkMode){
+      isDark(true);
+    }
     animatedIconController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
+      reverseDuration: const Duration(milliseconds: 300),
     );
+
+    update();
 
     super.onInit();
   }
@@ -86,8 +101,26 @@ class HomeController extends GetxController
   }
 
   void changeTheme() {
-    Get.changeTheme(
-      (Get.isDarkMode) ? ThemeData.light() : ThemeData.dark(),
-    );
+    if(Get.isDarkMode){
+      Get.changeTheme(ThemeData.light());
+      isDark(false);
+    }else{
+      Get.changeTheme(ThemeData.dark());
+      isDark(true);
+    }
+    update(['theme']);
+
+  }
+
+  void selectChat({required ChatModel item}) {
+    item.isSelected(true);
+  }
+
+  void tapOnChat({required ChatModel item}) {
+    if (listOfChats.any((element) => element.isSelected.isTrue)) {
+      item.isSelected(!item.isSelected.value);
+    } else {
+      print('single');
+    }
   }
 }
