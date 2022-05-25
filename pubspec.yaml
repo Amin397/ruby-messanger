@@ -41,6 +41,7 @@ dependencies:
   get: ^4.6.3
   animations: ^2.0.2
   adaptive_theme: ^3.0.0
+  flutter_staggered_animations: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +80,9 @@ flutter:
     - family: iranSanc
       fonts:
         - asset: assets/fonts/iransans_fa.ttf
+    - family: ruby
+      fonts:
+        - asset: assets/fonts/ruby.ttf
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

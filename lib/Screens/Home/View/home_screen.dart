@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
-
 import 'Widget/home_back_widget.dart';
+import 'Widget/home_front_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -23,9 +23,9 @@ class HomeScreen extends StatelessWidget {
               HomeBackWidget(
                 controller: controller,
               ),
-
-
-
+              HomeFrontWidget(
+                controller:controller,
+              )
             ],
           ),
         ),

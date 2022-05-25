@@ -12,5 +12,7 @@ class Themes {
       color: Colors.white,
       opacity: .8,
     ),
+    textTheme: TextTheme().apply(bodyColor: Colors.white)
   );
+
 }

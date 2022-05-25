@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 const EdgeInsets paddingAll8 = EdgeInsets.all(8.0);
+const EdgeInsets paddingAll4 = EdgeInsets.all(4.0);
 const EdgeInsets paddingAll10 = EdgeInsets.all(10.0);
 const EdgeInsets paddingAll6 = EdgeInsets.all(6.0);
 const EdgeInsets paddingAll16 = EdgeInsets.all(16.0);
