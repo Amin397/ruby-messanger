@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rubymessanger/MainModel/GetRouts.dart';
 import 'package:rubymessanger/MainModel/chat_model.dart';
 
 class HomeController extends GetxController
@@ -114,11 +115,14 @@ class HomeController extends GetxController
     item.isSelected(true);
   }
 
-  void tapOnChat({required ChatModel item}) {
+  void tapOnChat({required ChatModel item, required int index,}) {
     if (listOfChats.any((element) => element.isSelected.isTrue)) {
       item.isSelected(!item.isSelected.value);
     } else {
-      print('single');
+      Get.toNamed(NameRouts.singleChat, arguments:{
+        'index':index,
+        'item':item,
+      });
     }
   }
 }

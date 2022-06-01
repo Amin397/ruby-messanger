@@ -16,11 +16,12 @@ class HomeFrontWidget extends StatelessWidget {
     return Obx(
       () => WillPopScope(
         onWillPop: () async {
-          if(controller.listOfChats.any((element) => element.isSelected.isTrue)){
+          if (controller.listOfChats
+              .any((element) => element.isSelected.isTrue)) {
             for (var element in controller.listOfChats) {
               element.isSelected(false);
             }
-          }else if(controller.isCollapsed.isTrue){
+          } else if (controller.isCollapsed.isTrue) {
             controller.openMenu();
           }
           return false;
@@ -31,11 +32,17 @@ class HomeFrontWidget extends StatelessWidget {
             padding: paddingAll8,
             duration: const Duration(milliseconds: 350),
             width: Get.width,
-            height:
-                controller.isCollapsed.isTrue ? Get.height * .6 : Get.height * .9,
+            height: controller.isCollapsed.isTrue
+                ? Get.height * .6
+                : Get.height * .9,
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: ViewUtils.shadow(),
+              boxShadow: ViewUtils.shadow(
+                offset: const Offset(
+                  0.0,
+                  -3.0,
+                ),
+              ),
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(12.0),
               ),

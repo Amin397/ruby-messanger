@@ -25,11 +25,16 @@ class BuildChatItem extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: InkWell(
-        onLongPress: (){
-          controller.selectChat(item:chat,);
+        onLongPress: () {
+          controller.selectChat(
+            item: chat,
+          );
         },
-        onTap: (){
-          controller.tapOnChat(item:chat);
+        onTap: () {
+          controller.tapOnChat(
+            item: chat,
+            index: index,
+          );
         },
         child: SizedBox(
           width: Get.width,
@@ -68,22 +73,27 @@ class BuildChatItem extends StatelessWidget {
             width: Get.width * .13,
             height: Get.width * .13,
             decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: (chat.isSelected.isTrue)
-                      ? Colors.red.shade800
-                      : ColorUtils.grey,
-                  width: (chat.isSelected.isTrue) ? 2.5 : 1.0,
-                ),
-                color: Colors
-                    .primaries[Random().nextInt(Colors.primaries.length)]
-                    .withOpacity(.5)),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: (chat.isSelected.isTrue)
+                    ? Colors.red.shade800
+                    : ColorUtils.grey,
+                width: (chat.isSelected.isTrue) ? 2.5 : 1.0,
+              ),
+              color: (chat.image!.length > 5)
+                  ? Colors.transparent
+                  : Colors.primaries[Random().nextInt(Colors.primaries.length)]
+                      .withOpacity(.5),
+            ),
             child: (chat.image!.length > 5)
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(50.0),
-                    child: Image(
-                      image: AssetImage(chat.image!),
-                      fit: BoxFit.cover,
+                ? Hero(
+                    tag: 'chatProfile-$index',
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50.0),
+                      child: Image(
+                        image: AssetImage(chat.image!),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   )
                 : Center(
@@ -196,7 +206,12 @@ class BuildChatItem extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: Colors.red.shade800,
                                   borderRadius: radiusAll8,
-                                  boxShadow: ViewUtils.shadow(),
+                                  boxShadow: ViewUtils.shadow(
+                                    offset: const Offset(
+                                      0.0,
+                                      -2.0,
+                                    ),
+                                  ),
                                 ),
                                 child: Center(
                                   child: AutoSizeText(
