@@ -8,7 +8,9 @@ import 'Widget/single_chat_appBar_widget.dart';
 
 class SingleChatScreen extends StatelessWidget {
   SingleChatScreen({Key? key}) : super(key: key);
-  final SingleChatController controller = Get.put(SingleChatController());
+  final SingleChatController controller = Get.put(
+    SingleChatController(),
+  );
 
   @override
   Widget build(BuildContext context) {

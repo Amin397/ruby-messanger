@@ -6,6 +6,9 @@ import 'package:rubymessanger/Theme/themes.dart';
 import 'MainModel/GetRouts.dart';
 
 Future<void> main() async {
+
+
+  ///TODO : add 2 language
   await GetStorage.init();
 
   runApp(
