@@ -96,11 +96,11 @@ class BuildNormalAppbarWidget extends StatelessWidget {
                       value: 1,
                       child: Row(
                         children: [
-                          Icon(Icons.add),
+                          const Icon(Icons.add),
                           SizedBox(
                             width: Get.width * .03,
                           ),
-                          Text('Settings')
+                          const Text('Settings')
                         ],
                       ),
                     ),

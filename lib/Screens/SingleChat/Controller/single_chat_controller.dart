@@ -10,6 +10,7 @@ class SingleChatController extends GetxController {
   RxBool isSearchClicked = false.obs;
 
   TextEditingController searchTextController = TextEditingController();
+  TextEditingController messageTextController = TextEditingController();
 
   @override
   void onInit() {

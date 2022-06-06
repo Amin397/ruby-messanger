@@ -8,29 +8,22 @@ class ColorUtils{
   static const Color categoryBackGrey = Color(0xffE8E7E7);
   static const Color categoryIconGrey = Color(0xff717070);
   static const Color textColor = Color(0xff717070);
-  static const Color submit = Color(0xffDC5690);
-  static const Color colorDeepGrey = Color(0xff383A3F);
-  static const Color bestBack = Color(0xffecddc9);
-  static const Color snappGreen = Color(0xff39E239);
-  static const Color deleteRed = Color(0xffEE2E18);
-  static const Color green = Color(0xff21CC3D);
-  static const Color editGreen = Color(0xff67DE7B);
-  static const Color pink = Color(0xffEC26BE);
-  static const Color grey = Color(0xff9A9A9A);
+  static Color mainColor = Colors.red.shade800;
+  static Color mainDarkColor = Colors.blueGrey.shade800;
 
 
-  static const MaterialColor main = MaterialColor(0xFFFF9C07, <int, Color>{
-    50: Color(0xFFFFEFE0),
-    100: Color(0xFFFFD6B3),
-    200: Color(0xFFFFBB80),
-    300: Color(0xFFFFA04D),
-    400: Color(0xFFFF8B26),
-    500: Color(0xFFFF7700),
-    600: Color(0xFFFF6F00),
-    700: Color(0xFFFF6400),
-    800: Color(0xFFFF5A00),
-    900: Color(0xFFFF4700),
-  });
+  // static const MaterialColor main = MaterialColor(0xFFFF9C07, <int, Color>{
+  //   50: Color(0xFFFFEFE0),
+  //   100: Color(0xFFFFD6B3),
+  //   200: Color(0xFFFFBB80),
+  //   300: Color(0xFFFFA04D),
+  //   400: Color(0xFFFF8B26),
+  //   500: Color(0xFFFF7700),
+  //   600: Color(0xFFFF6F00),
+  //   700: Color(0xFFFF6400),
+  //   800: Color(0xFFFF5A00),
+  //   900: Color(0xFFFF4700),
+  // });
 
   static const MaterialColor mainAccent = MaterialColor(0xFFFFF5F2, <int, Color>{
     100: Color(0xFFFFFFFF),

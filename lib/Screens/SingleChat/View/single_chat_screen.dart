@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../Controller/single_chat_controller.dart';
 import 'Widget/build_chat_body_widget.dart';
 import 'Widget/build_chat_text_filed_widget.dart';
+import 'Widget/build_search_result_widget.dart';
 import 'Widget/single_chat_appBar_widget.dart';
 
 class SingleChatScreen extends StatelessWidget {
@@ -31,9 +32,21 @@ class SingleChatScreen extends StatelessWidget {
               SizedBox(
                 height: Get.height * .01,
               ),
-              BuildChatTextFieldWidget(
-                controller: controller,
-              )
+              Obx(()=>AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (widget, animation) => FadeTransition(
+                  opacity: animation,
+                  child: widget,
+                ),
+                child: (controller.isSearchClicked.isTrue)
+                    ? BuildSearchResultWidget(
+                  controller: controller,
+                )
+                    : BuildChatTextFieldWidget(
+                  controller: controller,
+                ),
+              ),),
+
             ],
           ),
         ),

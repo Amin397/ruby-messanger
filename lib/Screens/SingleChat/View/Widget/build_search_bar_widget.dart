@@ -27,7 +27,7 @@ class BuildSearchBarWidget extends StatelessWidget {
               enable: true,
               width: double.maxFinite,
               height: double.maxFinite,
-              label: 'جست و جو ',
+              label: 'Search ',
               fillColor: Colors.transparent,
               hintSize: 14.0,
               hintTextColor: Colors.grey,

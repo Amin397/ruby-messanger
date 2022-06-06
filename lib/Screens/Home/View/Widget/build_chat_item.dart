@@ -76,8 +76,8 @@ class BuildChatItem extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(
                 color: (chat.isSelected.isTrue)
-                    ? Colors.red.shade800
-                    : ColorUtils.grey,
+                    ? ColorUtils.mainColor
+                    : Colors.grey,
                 width: (chat.isSelected.isTrue) ? 2.5 : 1.0,
               ),
               color: (chat.image!.length > 5)
@@ -189,7 +189,7 @@ class BuildChatItem extends StatelessWidget {
                                 minFontSize: 10.0,
                                 maxLines: 1,
                                 style: TextStyle(
-                                  color: ColorUtils.grey,
+                                  color: ColorUtils.textColor,
                                   fontSize: 12.0,
                                 ),
                               ),
@@ -272,7 +272,7 @@ class BuildChatItem extends StatelessWidget {
                             maxFontSize: 14.0,
                             minFontSize: 10.0,
                             style: const TextStyle(
-                              color: ColorUtils.grey,
+                              color: ColorUtils.textColor,
                               fontSize: 12.0,
                             ),
                           ),
