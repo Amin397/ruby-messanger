@@ -14,32 +14,37 @@ class BuildNormalAppbarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: SizedBox(
-        height: Get.height * .07,
-        width: Get.width,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            _buildChatActions(),
-            _buildChatTitle(),
-            const SizedBox(
-              width: 8.0,
-            ),
-            _buildChatAvatar(),
-            Padding(
-              padding: paddingAll4,
-              child: IconButton(
-                onPressed: () {
-                  Get.back();
-                },
-                icon: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: Colors.white,
-                ),
+      child: GestureDetector(
+        onTap: (){
+          controller.goToSingleProfile();
+        },
+        child: SizedBox(
+          height: Get.height * .07,
+          width: Get.width,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildChatActions(),
+              _buildChatTitle(),
+              const SizedBox(
+                width: 8.0,
               ),
-            )
-          ],
+              _buildChatAvatar(),
+              Padding(
+                padding: paddingAll4,
+                child: IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -36,7 +36,7 @@ class HomeBackWidget extends StatelessWidget {
                     ),
                     Divider(),
                     _buildMenuItem(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.settings,
                         ),
                         text: 'Setting'),

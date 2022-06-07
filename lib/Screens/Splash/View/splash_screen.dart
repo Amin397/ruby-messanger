@@ -42,6 +42,7 @@ class SplashScreen extends StatelessWidget {
                     'Ruby',
                     style: TextStyle(
                       color: Colors.white,
+                      fontFamily: 'ruby',
                       fontSize: 30.0,
                       letterSpacing: 8.0,
                       fontWeight: FontWeight.bold,
