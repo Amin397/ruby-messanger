@@ -62,7 +62,7 @@ class WidgetUtils{
             prefixIcon: prefixWidget,
             fillColor: fillColor,
             enabledBorder: OutlineInputBorder(
-              borderRadius: radiusAll10,
+              borderRadius: radiusAll6,
               borderSide: BorderSide(
                 color: borderColor,
                 width: 0.5,
