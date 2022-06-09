@@ -69,7 +69,7 @@ class RequestsUtil {
     required WebControllers webController,
     required WebMethods webMethod,
   }) {
-    return Uri.parse('http://ruby.alirn.ir/$webController/$webMethod/');
+    return Uri.parse('http://ruby.alirn.ir/${webController.name}/${webMethod.name}/');
   }
 
 //

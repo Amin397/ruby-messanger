@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
+import 'package:rubymessanger/Utils/view_utils.dart';
 import 'package:rubymessanger/Utils/widget_utils.dart';
 
 import '../../Controller/register_login_controller.dart';
@@ -36,16 +37,31 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
         padding: paddingAll10,
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Obx(
-                () => Text(
-                  (controller.isLogin.isTrue) ? 'Sign in' : 'Sign up',
-                  style: const TextStyle(
-                    color: ColorUtils.textColor,
-                    fontSize: 24.0,
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  (controller.isLogin.isTrue)
+                      ? const SizedBox()
+                      : Center(
+                          child: CircularProgressIndicator(
+                            value: controller.passwordStrongValue.value,
+                            strokeWidth: 5.0,
+                            color: (controller.passwordStrongValue.value < .4)
+                                ? ColorUtils.mainColor
+                                : (controller.passwordStrongValue.value < 1.0)
+                                    ? Colors.orange
+                                    : Colors.green.shade700,
+                          ),
+                        ),
+                  Text(
+                    (controller.isLogin.isTrue) ? 'Sign in' : 'Sign up',
+                    style: const TextStyle(
+                      color: ColorUtils.textColor,
+                      fontSize: 24.0,
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
             SizedBox(
@@ -115,6 +131,38 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
                       ),
                       WidgetUtils.textFormField(
                         maxLines: 1,
+                        func: (s) {
+                          if (controller.userNameTextController.text.isEmpty) {
+                            ViewUtils.showError(
+                              errorMessage: 'Please enter your Username',
+                            );
+                          } else if (controller
+                                  .userNameTextController.text.length <=
+                              4) {
+                            ViewUtils.showError(
+                              errorMessage:
+                                  'The value entered must be more than 4 characters',
+                            );
+                          } else if (controller
+                              .passwordTextController.text.isEmpty) {
+                            ViewUtils.showError(
+                              errorMessage: 'Please enter your Password',
+                            );
+                          } else if (controller
+                                  .passwordTextController.text.length <
+                              10) {
+                            ViewUtils.showError(
+                              errorMessage:
+                                  'The value entered must be more than 10 characters',
+                            );
+                          } else {
+                            if (controller.isLogin.isTrue) {
+                              controller.loginRequest();
+                            } else {
+                              controller.registerRequest();
+                            }
+                          }
+                        },
                         textAlign: TextAlign.left,
                         controller: controller.passwordTextController,
                         inputAction: TextInputAction.done,
@@ -122,7 +170,9 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
                         height: Get.height * .06,
                         autoFocus: true,
                         enable: true,
-                        onChange: (s) {},
+                        onChange: (s) {
+                          controller.onChangePassword(text: s);
+                        },
                         label: '',
                         borderColor: Colors.grey,
                         fillColor: Colors.white,
@@ -142,26 +192,30 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
                                       )
                                     : const SizedBox(),
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const AutoSizeText(
-                            'Forgot Password',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ),
+                      Obx(
+                        () => (controller.isLogin.isTrue)
+                            ? Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {},
+                                  child: const AutoSizeText(
+                                    'Forgot Password',
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
                       )
                     ],
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              height: Get.height * .03,
-            ),
+            // SizedBox(
+            //   height: Get.height * .03,
+            // ),
             _buildSignUpText(),
             _buildSubmitButton(),
           ],
@@ -181,7 +235,31 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
       ),
       color: ColorUtils.mainColor,
       controller: controller.btnController,
-      onPressed: controller.doSomething,
+      onPressed: () {
+        if (controller.userNameTextController.text.isEmpty) {
+          ViewUtils.showError(
+            errorMessage: 'Please enter your Username',
+          );
+        } else if (controller.userNameTextController.text.length <= 4) {
+          ViewUtils.showError(
+            errorMessage: 'The value entered must be more than 4 characters',
+          );
+        } else if (controller.passwordTextController.text.isEmpty) {
+          ViewUtils.showError(
+            errorMessage: 'Please enter your Password',
+          );
+        } else if (controller.passwordTextController.text.length < 10) {
+          ViewUtils.showError(
+            errorMessage: 'The value entered must be more than 10 characters',
+          );
+        } else {
+          if (controller.isLogin.isTrue) {
+            controller.loginRequest();
+          } else {
+            controller.registerRequest();
+          }
+        }
+      },
       elevation: 5.0,
       errorColor: ColorUtils.mainDarkColor,
       successColor: Colors.green.shade800,

@@ -1,3 +1,4 @@
 enum WebMethods{
-  register
+  register,
+  login
 }
