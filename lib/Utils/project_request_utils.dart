@@ -45,4 +45,32 @@ class ProjectRequestUtils extends RequestsUtil {
           'Authorization': 'Bearer ${Blocs.user.accessToken}',
         });
   }
+
+  Future<http.Response> sendMobile({required String mobileNumber}) async {
+    return await makeRequest(
+      webMethod: WebMethods.submit_phone,
+      webController: WebControllers.user,
+      type: 'patch',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+      body: {
+        'phone_number':mobileNumber,
+      }
+    );
+  }
+
+  Future<http.Response> checkOtpCode({required String code}) async {
+    return await makeRequest(
+      webMethod: WebMethods.submit_otp,
+      webController: WebControllers.user,
+      type: 'post',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+      body: {
+        'otp':code,
+      }
+    );
+  }
 }

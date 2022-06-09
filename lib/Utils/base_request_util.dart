@@ -4,7 +4,6 @@ import '../Const/web_controllers.dart';
 import '../Const/web_methods.dart';
 
 class RequestsUtil {
-
   Future<http.Response> makeRequest({
     required WebMethods webMethod,
     required WebControllers webController,
@@ -14,18 +13,22 @@ class RequestsUtil {
   }) async {
     late http.Response response;
 
-
     print('Path: \n');
-    print(makePath(webController: webController, webMethod: webMethod));
+    print(makePath(webController: webController, webMethod: webMethod)
+        .toString()
+        .replaceAll('_', '-'));
     print('body: \n');
     print(body);
     print('header: \n');
     print(headers);
 
+    print('type: \n');
+    print(type);
+
     switch (type) {
       case 'post':
         {
-          try{
+          try {
             response = await http.post(
               makePath(
                 webMethod: webMethod,
@@ -34,7 +37,7 @@ class RequestsUtil {
               body: body,
               headers: headers,
             );
-          }catch(e){
+          } catch (e) {
             print(e);
           }
 
@@ -42,10 +45,35 @@ class RequestsUtil {
         }
       case 'put':
         {
+          try {
+            response = await http.put(
+              makePath(
+                webMethod: webMethod,
+                webController: webController,
+              ),
+              body: body,
+              headers: headers,
+            );
+          } catch (e) {
+            print(e);
+          }
           break;
         }
       case 'patch':
         {
+          try {
+            response = await http.patch(
+              makePath(
+                webMethod: webMethod,
+                webController: webController,
+              ),
+              body: body,
+              headers: headers,
+            );
+          } catch (e) {
+            print('TTTTTTTTTTTTTTTTTTTTTTT');
+            print(e);
+          }
           break;
         }
       case 'get':
@@ -54,14 +82,12 @@ class RequestsUtil {
         }
     }
 
-
     print('status Code: \n');
     print(response.statusCode);
 
-
     print('response body: \n');
     print(response.body);
-    
+
     return response;
   }
 
@@ -69,7 +95,9 @@ class RequestsUtil {
     required WebControllers webController,
     required WebMethods webMethod,
   }) {
-    return Uri.parse('http://ruby.alirn.ir/${webController.name}/${webMethod.name}/');
+    return Uri.parse(
+        'http://ruby.alirn.ir/${webController.name}/${webMethod.name}/'
+            .replaceAll('_', '-'));
   }
 
 //

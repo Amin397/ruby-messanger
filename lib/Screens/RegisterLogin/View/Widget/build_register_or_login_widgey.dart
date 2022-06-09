@@ -90,7 +90,7 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
                         controller: controller.userNameTextController,
                         inputAction: TextInputAction.done,
                         width: Get.width * .9,
-                        height: Get.height * .06,
+                        height: Get.height * .1,
                         autoFocus: true,
                         enable: true,
                         onChange: (s) {
@@ -167,7 +167,7 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
                         controller: controller.passwordTextController,
                         inputAction: TextInputAction.done,
                         width: Get.width * .9,
-                        height: Get.height * .06,
+                        height: Get.height * .1,
                         autoFocus: true,
                         enable: true,
                         onChange: (s) {
@@ -197,7 +197,9 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
                             ? Align(
                                 alignment: Alignment.centerRight,
                                 child: TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    controller.showMobileModal();
+                                  },
                                   child: const AutoSizeText(
                                     'Forgot Password',
                                     style: TextStyle(

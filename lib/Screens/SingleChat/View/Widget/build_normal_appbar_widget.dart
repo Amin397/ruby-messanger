@@ -111,17 +111,6 @@ class BuildNormalAppbarWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                // child: IconButton(
-                //   onPressed: () {
-                //
-                //     controller.showMoreOptions();
-                //
-                //   },
-                //   icon: const Icon(
-                //     Icons.more_vert,
-                //     color: Colors.white,
-                //   ),
-                // ),
               ),
             ),
           ),

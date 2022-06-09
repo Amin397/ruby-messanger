@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:rubymessanger/Screens/CompleteProfile/View/complete_profile_screen.dart';
 
 import '../Screens/ChatProfile/Screen/single_profile_screen.dart';
 import '../Screens/Home/View/home_screen.dart';
@@ -15,6 +16,7 @@ class NameRouts{
   static const String singleProfile = '/singleProfile';
   static const String intro = '/intro';
   static const String registerLogin = '/registerLogin';
+  static const String completeProfile = '/completeProfile';
 }
 
 
@@ -26,5 +28,6 @@ class PageRout{
     GetPage(name: NameRouts.singleProfile, page: ()=> SingleProfileScreen()),
     GetPage(name: NameRouts.intro, page: ()=> IntroScreen()),
     GetPage(name: NameRouts.registerLogin, page: ()=> RegisterLoginScreen()),
+    GetPage(name: NameRouts.completeProfile, page: ()=> CompleteProfileScreen()),
   ];
 }

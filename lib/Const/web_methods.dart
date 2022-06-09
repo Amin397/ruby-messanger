@@ -1,4 +1,6 @@
 enum WebMethods{
   register,
-  login
+  login,
+  submit_phone,
+  submit_otp,
 }

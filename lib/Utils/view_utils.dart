@@ -59,4 +59,55 @@ class ViewUtils {
       ),
     );
   }
+
+
+  static void onChange({String? string,
+    TextEditingController? textEditingController,
+    Function? func}) {
+    func!();
+    List<String> list = string!.split('');
+    if (list.length > 0) {
+      switch (list.length) {
+        case 1:
+          if (list[0] == '0') {
+            textEditingController!.text = '0';
+          } else {
+            textEditingController!.clear();
+          }
+          break;
+        case 2:
+          if (list[1] == '9') {
+            textEditingController!.text = '09';
+          } else {
+            textEditingController!.text = '0';
+          }
+          break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+          list.removeAt(0);
+          list.removeAt(0);
+          textEditingController!.text = '09' + list.join('');
+          break;
+      }
+      Future.delayed(
+        Duration.zero,
+            () =>
+        textEditingController!.selection = TextSelection.fromPosition(
+          TextPosition(
+            offset: textEditingController.text.length,
+          ),
+        ),
+      );
+    }
+  }
+
+
+
 }
