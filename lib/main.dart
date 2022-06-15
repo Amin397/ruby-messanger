@@ -15,7 +15,7 @@ Future<void> main() async {
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       getPages: PageRout.pages,
-      initialRoute: NameRouts.splash,
+      initialRoute: NameRouts.completeProfile,
       theme: ThemeData(
         fontFamily: 'iranSanc',
         primaryColor: Colors.blueGrey[300],
