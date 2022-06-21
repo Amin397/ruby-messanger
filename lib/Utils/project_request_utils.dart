@@ -36,41 +36,65 @@ class ProjectRequestUtils extends RequestsUtil {
         });
   }
 
+  Future<http.Response> uploadProfileImage({required String filePath}) async {
+    return await makeFileRequest(
+      webMethod: WebMethods.picture,
+      webController: WebControllers.profile,
+      type: 'put',
+      filePath: filePath,
+      // headers: 'Bearer ${Blocs.user.accessToken}',
+      headers:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE2NTY0NDgxNTQuMjI4NDAzfQ.OrD2iNL_XF6S_sHG4_UHzMOpbYkB0abdVdHn2yAXmqY',
+    );
+  }
+
+  Future<http.Response> removeProfileImage() async {
+    return await makeRequest(
+      webMethod: WebMethods.picture,
+      webController: WebControllers.profile,
+      type: 'put',
+      body: {'profile_picture': ''},
+      headers: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE2NTY0NDgxNTQuMjI4NDAzfQ.OrD2iNL_XF6S_sHG4_UHzMOpbYkB0abdVdHn2yAXmqY',
+      },
+      // headers: 'Bearer ${Blocs.user.accessToken}',
+    );
+  }
+
   Future<http.Response> getUserData() async {
     return await makeRequest(
-        webMethod: WebMethods.login,
-        webController: WebControllers.user,
-        type: 'get',
-        headers: {
-          'Authorization': 'Bearer ${Blocs.user.accessToken}',
-        });
+      webMethod: WebMethods.login,
+      webController: WebControllers.user,
+      type: 'get',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+    );
   }
 
   Future<http.Response> sendMobile({required String mobileNumber}) async {
     return await makeRequest(
-      webMethod: WebMethods.submit_phone,
-      webController: WebControllers.user,
-      type: 'patch',
-      headers: {
-        'Authorization': 'Bearer ${Blocs.user.accessToken}',
-      },
-      body: {
-        'phone_number':mobileNumber,
-      }
-    );
+        webMethod: WebMethods.submit_phone,
+        webController: WebControllers.user,
+        type: 'patch',
+        headers: {
+          'Authorization': 'Bearer ${Blocs.user.accessToken}',
+        },
+        body: {
+          'phone_number': mobileNumber,
+        });
   }
 
   Future<http.Response> checkOtpCode({required String code}) async {
     return await makeRequest(
-      webMethod: WebMethods.submit_otp,
-      webController: WebControllers.user,
-      type: 'post',
-      headers: {
-        'Authorization': 'Bearer ${Blocs.user.accessToken}',
-      },
-      body: {
-        'otp':code,
-      }
-    );
+        webMethod: WebMethods.submit_otp,
+        webController: WebControllers.user,
+        type: 'post',
+        headers: {
+          'Authorization': 'Bearer ${Blocs.user.accessToken}',
+        },
+        body: {
+          'otp': code,
+        });
   }
 }

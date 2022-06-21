@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 import '../Const/web_controllers.dart';
 import '../Const/web_methods.dart';
@@ -74,6 +77,104 @@ class RequestsUtil {
             print('TTTTTTTTTTTTTTTTTTTTTTT');
             print(e);
           }
+          break;
+        }
+      case 'get':
+        {
+          break;
+        }
+    }
+
+    print('status Code: \n');
+    print(response.statusCode);
+
+    print('response body: \n');
+    print(response.body);
+
+    return response;
+  }
+
+  Future<Response> makeFileRequest({
+    required WebMethods webMethod,
+    required WebControllers webController,
+    String headers =  '',
+    required String type,
+    String? filePath ,
+  }) async {
+    late http.MultipartRequest request;
+    late http.StreamedResponse response1;
+    late Response response;
+
+    print('Path: \n');
+    print(makePath(webController: webController, webMethod: webMethod)
+        .toString()
+        .replaceAll('_', '-'));
+
+    print('header: \n');
+    print(headers);
+
+    print('type: \n');
+    print(type);
+
+    switch (type) {
+      case 'post':
+        {
+
+          break;
+        }
+      case 'put':
+        {
+
+          request = http.MultipartRequest(
+            type.toUpperCase(),
+            makePath(
+              webMethod: webMethod,
+              webController: webController,
+            ),
+          );
+          request.headers['Authorization'] = headers;
+          request.files.add(
+            await http.MultipartFile.fromPath(
+              'profile_picture',
+              filePath!,
+            ),
+          );
+          try {
+            response1 = await request.send();
+            response = await http.Response.fromStream(response1);
+          } catch (e) {
+            print(e);
+          }
+
+          // try {
+          //   response = await http.put(
+          //     makePath(
+          //       webMethod: webMethod,
+          //       webController: webController,
+          //     ),
+          //     body: body,
+          //     headers: headers,
+          //   );
+          // } catch (e) {
+          //   print(e);
+          // }
+          break;
+        }
+      case 'patch':
+        {
+          // try {
+          //   response = await http.patch(
+          //     makePath(
+          //       webMethod: webMethod,
+          //       webController: webController,
+          //     ),
+          //     body: body,
+          //     headers: headers,
+          //   );
+          // } catch (e) {
+          //   print('TTTTTTTTTTTTTTTTTTTTTTT');
+          //   print(e);
+          // }
           break;
         }
       case 'get':

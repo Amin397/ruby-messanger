@@ -5,6 +5,7 @@ import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 
 import '../Controller/complete_profile_controller.dart';
+import 'Widget/build_complete_register_name_and_gender_widget.dart';
 import 'Widget/build_next_or_previous_button_widget.dart';
 import 'Widget/build_profile_image_widget.dart';
 
@@ -66,7 +67,7 @@ class CompleteProfileScreen extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: (controller.currentIndex.value + 1) * (Get.width * .2),
+          width: (controller.currentIndex.value + 1) * (Get.width * .5),
           height: Get.height * .01,
           decoration: BoxDecoration(
             color: Colors.blue,
@@ -78,17 +79,23 @@ class CompleteProfileScreen extends StatelessWidget {
   }
 
   Widget _buildPageView() {
-    return Expanded(
-      child: SizedBox(
-        height: double.maxFinite,
-        width: double.maxFinite,
-        child: PageView(
-          controller: controller.pageController,
-          children: [
-            BuildCompleteProfileImageWidget(
-              controller: controller,
-            )
-          ],
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Expanded(
+        child: SizedBox(
+          height: double.maxFinite,
+          width: double.maxFinite,
+          child: PageView(
+            controller: controller.pageController,
+            children: [
+              BuildCompleteRegisterImageWidget(
+                controller: controller,
+              ),
+              BuildCompleteRegisterNameAndGenderWidget(
+                controller:controller,
+              )
+            ],
+          ),
         ),
       ),
     );

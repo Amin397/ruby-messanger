@@ -4,9 +4,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:rubymessanger/Utils/project_request_utils.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
 
 class CompleteProfileController extends GetxController {
+  ProjectRequestUtils request = ProjectRequestUtils();
   late final String userName;
   late final String mobile;
   final ImagePicker picker = ImagePicker();
@@ -34,22 +36,16 @@ class CompleteProfileController extends GetxController {
       );
 
       if (image != null) {
-
         croppedFile = await ImageCropper().cropImage(
           sourcePath: image!.path,
-          compressFormat: ImageCompressFormat.jpg,
+          compressFormat: ImageCompressFormat.png,
           compressQuality: 100,
-          // uiSettings: buildUiSettings(Get.context!),
+          cropStyle: CropStyle.circle,
         );
         if (croppedFile != null) {
-
-          // setState(() {
-          //   _croppedFile = croppedFile;
-          // });
+          uploadImage();
+          update(['profileImage']);
         }
-
-
-        update(['profileImage']);
       } else {
         ViewUtils.showError(errorMessage: 'Image Not Available');
       }
@@ -59,7 +55,36 @@ class CompleteProfileController extends GetxController {
   }
 
   void removeImage() {
+    request.removeProfileImage().then((value){
+      print(value.statusCode);
+      print(value.body);
+    });
     croppedFile = null;
     update(['profileImage']);
+  }
+
+  void uploadImage() async {
+    request.uploadProfileImage(
+      filePath: croppedFile!.path,
+    ).then((value) {
+      print(value.statusCode);
+      print(value.body);
+    });
+  }
+
+  void goToNext() {
+    pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+    currentIndex(currentIndex.value + 1);
+  }
+
+  void goToPrevious() {
+    pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+    currentIndex(currentIndex.value - 1);
   }
 }

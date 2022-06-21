@@ -3,4 +3,5 @@ enum WebMethods{
   login,
   submit_phone,
   submit_otp,
+  picture,
 }

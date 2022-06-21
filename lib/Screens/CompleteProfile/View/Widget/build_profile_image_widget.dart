@@ -13,8 +13,8 @@ import 'package:rubymessanger/Utils/view_utils.dart';
 import 'build_camera_source_widget.dart';
 import 'build_remove_or_edit_image_widget.dart';
 
-class BuildCompleteProfileImageWidget extends StatelessWidget {
-  const BuildCompleteProfileImageWidget({Key? key, required this.controller})
+class BuildCompleteRegisterImageWidget extends StatelessWidget {
+  const BuildCompleteRegisterImageWidget({Key? key, required this.controller})
       : super(key: key);
 
   final CompleteProfileController controller;

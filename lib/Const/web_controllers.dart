@@ -1,3 +1,4 @@
 enum WebControllers{
-  user
+  user,
+  profile,
 }
