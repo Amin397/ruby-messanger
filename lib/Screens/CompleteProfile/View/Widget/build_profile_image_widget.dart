@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,9 @@ import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/CompleteProfile/Controller/complete_profile_controller.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
 
+import 'build_camera_source_widget.dart';
+import 'build_remove_or_edit_image_widget.dart';
+
 class BuildCompleteProfileImageWidget extends StatelessWidget {
   const BuildCompleteProfileImageWidget({Key? key, required this.controller})
       : super(key: key);
@@ -16,83 +21,76 @@ class BuildCompleteProfileImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder(
-      init: controller,
-      id: 'imageColor',
-      builder: (ctx) => (controller.image is XFile)
-          ? Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                height: Get.width * .4,
-                width: Get.width * .4,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: ViewUtils.shadow(
-                    offset: const Offset(3.0, 3.0),
-                  ),
-                  gradient: LinearGradient(
-                    colors: (controller.paletteGenerator is PaletteGenerator)
-                        ? controller.paletteGenerator!.colors.toList()
-                        : [
-                            Colors.white,
-                          ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Container(
-                        margin: paddingAll6,
-                        height: double.maxFinite,
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 5.0,
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: const Image(
-                            image: AssetImage('assets/images/image.jpg'),
-                          ),
-                        ),
+    return Container(
+      height: double.maxFinite,
+      width: double.maxFinite,
+      padding: paddingAll8,
+      child: GetBuilder(
+        init: controller,
+        id: 'profileImage',
+        builder: (ctx) => Column(
+          children: [
+            (controller.croppedFile != null)?_buildShowImage(): _buildImagePlace(),
+            SizedBox(
+              height: Get.height * .05,
+            ),
+            Expanded(
+              child: SizedBox(
+                height: double.maxFinite,
+                width: double.maxFinite,
+                child: BuildCameraSourceWidget(
+                        controller: controller,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : Align(
-              alignment: Alignment.centerLeft,
-              child: DottedBorder(
-                borderType: BorderType.RRect,
-                color: Colors.black54,
-                strokeWidth: 1.0,
-                radius: const Radius.circular(100),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(100)),
-                  child: SizedBox(
-                    height: Get.width * .4,
-                    width: Get.width * .4,
-                    child: Stack(
-                      children: [
-                        Center(
-                          child: Lottie.asset(
-                            'assets/anims/camera.json',
-                            height: Get.height * .6,
-                            width: Get.height * .6,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ),
             ),
+            (controller.croppedFile != null)?const SizedBox():SizedBox(
+              height: Get.height * .05,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImagePlace() {
+    return DottedBorder(
+      borderType: BorderType.Circle,
+      color: Colors.black54,
+      strokeWidth: 1.0,
+      radius: const Radius.circular(6),
+      child: SizedBox(
+        height: Get.width * .9,
+        width: Get.width * .9,
+        child: Center(
+          child: ClipRRect(
+            borderRadius: radiusAll6,
+            child: Lottie.asset(
+              'assets/anims/avatars.json',
+              height: Get.height * .3,
+              width: Get.height * .3,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShowImage() {
+    return Container(
+      height: Get.width * .9,
+      width: Get.width * .9,
+      decoration: BoxDecoration(
+        boxShadow: ViewUtils.shadow(),
+        shape: BoxShape.circle,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(200.0),
+        child: Image(
+          image: FileImage(
+            File(controller.croppedFile!.path),
+          ),
+        ),
+      ),
     );
   }
 }

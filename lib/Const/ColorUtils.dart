@@ -10,6 +10,8 @@ class ColorUtils{
   static const Color textColor = Color(0xff717070);
   static Color mainColor = Colors.red.shade800;
   static Color mainDarkColor = Colors.blueGrey.shade800;
+  static Color completeBack = const Color(0xffF0E3CA);
+  // static var completeBack;
 
 
   // static const MaterialColor main = MaterialColor(0xFFFF9C07, <int, Color>{
@@ -75,4 +77,5 @@ class ColorUtils{
     400: Color(0xFFFFA4DE),
     700: Color(0xFFFF8BD5),
   });
+
 }
