@@ -3,15 +3,12 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
-import 'package:palette_generator/palette_generator.dart';
+import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/CompleteProfile/Controller/complete_profile_controller.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
-
 import 'build_camera_source_widget.dart';
-import 'build_remove_or_edit_image_widget.dart';
 
 class BuildCompleteRegisterImageWidget extends StatelessWidget {
   const BuildCompleteRegisterImageWidget({Key? key, required this.controller})
@@ -30,7 +27,15 @@ class BuildCompleteRegisterImageWidget extends StatelessWidget {
         id: 'profileImage',
         builder: (ctx) => Column(
           children: [
-            (controller.croppedFile != null)?_buildShowImage(): _buildImagePlace(),
+            const Text(
+              'Profile Image',
+              style: TextStyle(
+                color: ColorUtils.textColor,
+              ),
+            ),
+            (controller.croppedFile != null)
+                ? _buildShowImage()
+                : _buildImagePlace(),
             SizedBox(
               height: Get.height * .05,
             ),
@@ -39,13 +44,15 @@ class BuildCompleteRegisterImageWidget extends StatelessWidget {
                 height: double.maxFinite,
                 width: double.maxFinite,
                 child: BuildCameraSourceWidget(
-                        controller: controller,
-                      ),
+                  controller: controller,
+                ),
               ),
             ),
-            (controller.croppedFile != null)?const SizedBox():SizedBox(
-              height: Get.height * .05,
-            ),
+            (controller.croppedFile != null)
+                ? const SizedBox()
+                : SizedBox(
+                    height: Get.height * .05,
+                  ),
           ],
         ),
       ),
@@ -77,20 +84,44 @@ class BuildCompleteRegisterImageWidget extends StatelessWidget {
 
   Widget _buildShowImage() {
     return Container(
-      height: Get.width * .9,
-      width: Get.width * .9,
-      decoration: BoxDecoration(
-        boxShadow: ViewUtils.shadow(),
-        shape: BoxShape.circle,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(200.0),
-        child: Image(
-          image: FileImage(
-            File(controller.croppedFile!.path),
-          ),
+        height: Get.width * .9,
+        width: Get.width * .9,
+        decoration: BoxDecoration(
+          boxShadow: ViewUtils.shadow(),
+          shape: BoxShape.circle,
         ),
-      ),
-    );
+        child: Obx(
+          () => Stack(
+            children: [
+              Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(200.0),
+                  child: Image(
+                    image: FileImage(
+                      File(controller.croppedFile!.path),
+                    ),
+                  ),
+                ),
+              ),
+              (controller.imageUploaded.isTrue)
+                  ? const SizedBox()
+                  : Container(
+                      height: Get.width * .9,
+                      width: Get.width * .9,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black54,
+                      ),
+                    ),
+              (controller.imageUploaded.isTrue)
+                  ? const SizedBox()
+                  : Center(
+                      child: CircularProgressIndicator(
+                        color: ColorUtils.mainColor,
+                      ),
+                    )
+            ],
+          ),
+        ));
   }
 }

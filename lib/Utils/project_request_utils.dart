@@ -36,15 +36,39 @@ class ProjectRequestUtils extends RequestsUtil {
         });
   }
 
+  Future<http.Response> completeRegister({
+    required String? userName,
+    String? firstName,
+    String? lastName,
+    String? bio,
+    required int gender,
+  }) async {
+    return await makeRequest(
+        webMethod: WebMethods.profile,
+        webController: WebControllers.user,
+        type: 'put',
+        headers: {
+          'Authorization': 'Bearer ${Blocs.user.accessToken}',
+        },
+        body: {
+          'username': userName,
+          'first_name': firstName,
+          'last_name': lastName,
+          'bio': bio,
+          'is_male': (gender == 0)?'true':'false',
+        });
+  }
+
   Future<http.Response> uploadProfileImage({required String filePath}) async {
     return await makeFileRequest(
       webMethod: WebMethods.picture,
       webController: WebControllers.profile,
       type: 'put',
       filePath: filePath,
+      optionalWebController: WebControllers.user,
       // headers: 'Bearer ${Blocs.user.accessToken}',
       headers:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE2NTY0NDgxNTQuMjI4NDAzfQ.OrD2iNL_XF6S_sHG4_UHzMOpbYkB0abdVdHn2yAXmqY',
+          'Bearer ${Blocs.user.accessToken}',
     );
   }
 
@@ -52,10 +76,12 @@ class ProjectRequestUtils extends RequestsUtil {
     return await makeRequest(
       webMethod: WebMethods.picture,
       webController: WebControllers.profile,
+      optionalWebMethod: WebControllers.user,
       type: 'put',
       body: {'profile_picture': ''},
       headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE2NTY0NDgxNTQuMjI4NDAzfQ.OrD2iNL_XF6S_sHG4_UHzMOpbYkB0abdVdHn2yAXmqY',
+        'Authorization':
+            'Bearer ${Blocs.user.accessToken}',
       },
       // headers: 'Bearer ${Blocs.user.accessToken}',
     );
@@ -63,7 +89,7 @@ class ProjectRequestUtils extends RequestsUtil {
 
   Future<http.Response> getUserData() async {
     return await makeRequest(
-      webMethod: WebMethods.login,
+      webMethod: WebMethods.profile,
       webController: WebControllers.user,
       type: 'get',
       headers: {

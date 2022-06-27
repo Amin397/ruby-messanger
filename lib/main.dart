@@ -5,8 +5,9 @@ import 'package:rubymessanger/Theme/themes.dart';
 
 import 'MainModel/GetRouts.dart';
 
-Future<void> main() async {
 
+String baseUrl = 'http://ruby.alirn.ir/';
+Future<void> main() async {
 
   ///TODO : add 2 language
   await GetStorage.init();
@@ -15,7 +16,7 @@ Future<void> main() async {
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       getPages: PageRout.pages,
-      initialRoute: NameRouts.completeProfile,
+      initialRoute: NameRouts.splash,
       theme: ThemeData(
         fontFamily: 'iranSanc',
         primaryColor: Colors.blueGrey[300],

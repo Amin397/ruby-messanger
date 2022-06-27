@@ -23,7 +23,7 @@ class NameRouts{
 class PageRout{
   static List<GetPage> pages = [
     GetPage(name: NameRouts.splash, page: ()=> SplashScreen()),
-    GetPage(name: NameRouts.home, page: ()=> HomeScreen()),
+    GetPage(name: NameRouts.home, page: ()=> HomeScreen() , transition: Transition.fade,),
     GetPage(name: NameRouts.singleChat, page: ()=> SingleChatScreen()),
     GetPage(name: NameRouts.singleProfile, page: ()=> SingleProfileScreen()),
     GetPage(name: NameRouts.intro, page: ()=> IntroScreen()),

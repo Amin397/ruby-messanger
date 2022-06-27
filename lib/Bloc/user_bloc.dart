@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:rubymessanger/main.dart';
+
 import '../MainModel/user_model.dart';
 
 class UserBloc {
@@ -19,6 +21,16 @@ class UserBloc {
 
   void setUserData({required Map<String , dynamic> userData}){
     user = UserModel.fromJson(userData);
+    streamController.sink.add(user);
+  }
+
+  void setUserProfileImage({required String image}){
+    user.profilePicture = baseUrl + image;
+    streamController.sink.add(user);
+  }
+
+  void removeUserProfileImage(){
+    user.profilePicture = '';
     streamController.sink.add(user);
   }
 

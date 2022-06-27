@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/CompleteProfile/Controller/complete_profile_controller.dart';
@@ -43,24 +44,58 @@ class BuildNextOrPreviousButtonWidget extends StatelessWidget {
         children: [
           Flexible(
             flex: 6,
-            child: Container(
-              height: double.maxFinite,
+            child: RoundedLoadingButton(
               width: double.maxFinite,
-              decoration: BoxDecoration(
-                color: ColorUtils.mainColor,
-                borderRadius: radiusAll6,
-                boxShadow: ViewUtils.shadow(),
+              height: double.maxFinite,
+              borderRadius: 8,
+              resetAfterDuration: true,
+              resetDuration: const Duration(
+                seconds: 2,
               ),
-              child: const Center(
-                child: AutoSizeText(
-                  'Submit',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
+              color: ColorUtils.mainColor,
+              controller: controller.btnController,
+              onPressed: () {
+                if (controller.firstNameController.text.isEmpty) {
+                  ViewUtils.showError(
+                    errorMessage: 'Please enter your first name',
+                  );
+                } else if (controller.lastNameController.text.isEmpty) {
+                  ViewUtils.showError(
+                    errorMessage: 'Please enter your last name',
+                  );
+                } else {
+                  controller.completeRegister();
+                }
+              },
+              elevation: 5.0,
+              errorColor: ColorUtils.mainDarkColor,
+              successColor: Colors.green.shade800,
+              child: const Text(
+                'Submit',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
                 ),
               ),
             ),
+            // child: Container(
+            //   height: double.maxFinite,
+            //   width: double.maxFinite,
+            //   decoration: BoxDecoration(
+            //     color: ColorUtils.mainColor,
+            //     borderRadius: radiusAll6,
+            //     boxShadow: ViewUtils.shadow(),
+            //   ),
+            //   child: const Center(
+            //     child: AutoSizeText(
+            //       'Submit',
+            //       style: TextStyle(
+            //         color: Colors.white,
+            //         fontSize: 16.0,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ),
           SizedBox(
             width: Get.width * .03,

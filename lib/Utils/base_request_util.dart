@@ -5,11 +5,13 @@ import 'package:http/http.dart';
 
 import '../Const/web_controllers.dart';
 import '../Const/web_methods.dart';
+import '../main.dart';
 
 class RequestsUtil {
   Future<http.Response> makeRequest({
     required WebMethods webMethod,
     required WebControllers webController,
+    WebControllers? optionalWebMethod,
     Map body = const {},
     Map<String, String> headers = const {},
     required String type,
@@ -17,9 +19,11 @@ class RequestsUtil {
     late http.Response response;
 
     print('Path: \n');
-    print(makePath(webController: webController, webMethod: webMethod)
-        .toString()
-        .replaceAll('_', '-'));
+    print(makePath(
+      webController: webController,
+      webMethod: webMethod,
+      optionalController: optionalWebMethod,
+    ).toString().replaceAll('_', '-'));
     print('body: \n');
     print(body);
     print('header: \n');
@@ -36,6 +40,7 @@ class RequestsUtil {
               makePath(
                 webMethod: webMethod,
                 webController: webController,
+                optionalController: optionalWebMethod,
               ),
               body: body,
               headers: headers,
@@ -53,6 +58,7 @@ class RequestsUtil {
               makePath(
                 webMethod: webMethod,
                 webController: webController,
+                optionalController: optionalWebMethod,
               ),
               body: body,
               headers: headers,
@@ -69,6 +75,7 @@ class RequestsUtil {
               makePath(
                 webMethod: webMethod,
                 webController: webController,
+                optionalController: optionalWebMethod,
               ),
               body: body,
               headers: headers,
@@ -81,6 +88,18 @@ class RequestsUtil {
         }
       case 'get':
         {
+          try {
+            response = await http.get(
+              makePath(
+                webMethod: webMethod,
+                webController: webController,
+                optionalController: optionalWebMethod,
+              ),
+              headers: headers,
+            );
+          } catch (e) {
+            print(e);
+          }
           break;
         }
     }
@@ -97,9 +116,10 @@ class RequestsUtil {
   Future<Response> makeFileRequest({
     required WebMethods webMethod,
     required WebControllers webController,
-    String headers =  '',
+    WebControllers? optionalWebController,
+    String headers = '',
     required String type,
-    String? filePath ,
+    String? filePath,
   }) async {
     late http.MultipartRequest request;
     late http.StreamedResponse response1;
@@ -119,17 +139,16 @@ class RequestsUtil {
     switch (type) {
       case 'post':
         {
-
           break;
         }
       case 'put':
         {
-
           request = http.MultipartRequest(
             type.toUpperCase(),
             makePath(
               webMethod: webMethod,
               webController: webController,
+              optionalController: optionalWebController,
             ),
           );
           request.headers['Authorization'] = headers;
@@ -192,13 +211,19 @@ class RequestsUtil {
     return response;
   }
 
-  Uri makePath({
-    required WebControllers webController,
-    required WebMethods webMethod,
-  }) {
-    return Uri.parse(
-        'http://ruby.alirn.ir/${webController.name}/${webMethod.name}/'
-            .replaceAll('_', '-'));
+  Uri makePath(
+      {required WebControllers webController,
+      required WebMethods webMethod,
+      WebControllers? optionalController}) {
+    if (optionalController != null) {
+      return Uri.parse(
+          '$baseUrl${optionalController.name}/${webController.name}/${webMethod.name}/'
+              .replaceAll('_', '-'));
+    } else {
+      return Uri.parse(
+          '$baseUrl${webController.name}/${webMethod.name}/'
+              .replaceAll('_', '-'));
+    }
   }
 
 //

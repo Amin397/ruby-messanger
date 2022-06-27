@@ -4,4 +4,5 @@ enum WebMethods{
   submit_phone,
   submit_otp,
   picture,
+  profile,
 }

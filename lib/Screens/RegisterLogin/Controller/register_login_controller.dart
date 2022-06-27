@@ -39,49 +39,49 @@ class RegisterLoginController extends GetxController {
   }
 
   void loginRequest() async {
-    Get.toNamed(NameRouts.completeProfile, arguments: {
-      'userName': userNameTextController.text.trim(),
-      'mobile': '09383974483',
-    });
+  //   Get.toNamed(NameRouts.completeProfile, arguments: {
+  //     'userName': userNameTextController.text.trim(),
+  //     'mobile': '09383974483',
+  //   });
 
-    // Map<String, dynamic> resMap;
-    //
-    // request
-    //     .login(
-    //   userName: userNameTextController.text,
-    //   password: passwordTextController.text,
-    // )
-    //     .then((value) {
-    //   switch (value.statusCode) {
-    //     case 201:
-    //       {
-    //         resMap = jsonDecode(value.body);
-    //
-    //         StorageUtils.setUserAccessToken(
-    //           accessToken: resMap['access_token'],
-    //         );
-    //         StorageUtils.setUserRefreshToken(
-    //           refreshToken: resMap['refresh_token'],
-    //         );
-    //
-    //         Blocs.user.setAccessToken(token: resMap['access_token']);
-    //         Blocs.user.setRefreshToken(token: resMap['refresh_token']);
-    //
-    //         getUserData();
-    //
-    //         break;
-    //       }
-    //     default:
-    //       {
-    //         resMap = jsonDecode(value.body);
-    //         btnController.error();
-    //         ViewUtils.showError(
-    //           errorMessage: resMap['detail'],
-    //         );
-    //         break;
-    //       }
-    //   }
-    // });
+    Map<String, dynamic> resMap;
+
+    request
+        .login(
+      userName: userNameTextController.text,
+      password: passwordTextController.text,
+    )
+        .then((value) {
+      switch (value.statusCode) {
+        case 201:
+          {
+            resMap = jsonDecode(value.body);
+
+            StorageUtils.setUserAccessToken(
+              accessToken: resMap['access_token'],
+            );
+            StorageUtils.setUserRefreshToken(
+              refreshToken: resMap['refresh_token'],
+            );
+
+            Blocs.user.setAccessToken(token: resMap['access_token']);
+            Blocs.user.setRefreshToken(token: resMap['refresh_token']);
+
+            getUserData();
+
+            break;
+          }
+        default:
+          {
+            resMap = jsonDecode(value.body);
+            btnController.error();
+            ViewUtils.showError(
+              errorMessage: resMap['detail'],
+            );
+            break;
+          }
+      }
+    });
 
     // Timer(const Duration(seconds: 3), () {
 

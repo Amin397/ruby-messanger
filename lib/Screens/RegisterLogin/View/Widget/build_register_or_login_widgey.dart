@@ -131,38 +131,38 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
                       ),
                       WidgetUtils.textFormField(
                         maxLines: 1,
-                        func: (s) {
-                          if (controller.userNameTextController.text.isEmpty) {
-                            ViewUtils.showError(
-                              errorMessage: 'Please enter your Username',
-                            );
-                          } else if (controller
-                                  .userNameTextController.text.length <=
-                              4) {
-                            ViewUtils.showError(
-                              errorMessage:
-                                  'The value entered must be more than 4 characters',
-                            );
-                          } else if (controller
-                              .passwordTextController.text.isEmpty) {
-                            ViewUtils.showError(
-                              errorMessage: 'Please enter your Password',
-                            );
-                          } else if (controller
-                                  .passwordTextController.text.length <
-                              10) {
-                            ViewUtils.showError(
-                              errorMessage:
-                                  'The value entered must be more than 10 characters',
-                            );
-                          } else {
-                            if (controller.isLogin.isTrue) {
-                              controller.loginRequest();
-                            } else {
-                              controller.registerRequest();
-                            }
-                          }
-                        },
+                        // func: (s) {
+                        //   if (controller.userNameTextController.text.isEmpty) {
+                        //     ViewUtils.showError(
+                        //       errorMessage: 'Please enter your Username',
+                        //     );
+                        //   } else if (controller
+                        //           .userNameTextController.text.length <=
+                        //       4) {
+                        //     ViewUtils.showError(
+                        //       errorMessage:
+                        //           'The value entered must be more than 4 characters',
+                        //     );
+                        //   } else if (controller
+                        //       .passwordTextController.text.isEmpty) {
+                        //     ViewUtils.showError(
+                        //       errorMessage: 'Please enter your Password',
+                        //     );
+                        //   } else if (controller
+                        //           .passwordTextController.text.length <
+                        //       10) {
+                        //     ViewUtils.showError(
+                        //       errorMessage:
+                        //           'The value entered must be more than 10 characters',
+                        //     );
+                        //   } else {
+                        //     if (controller.isLogin.isTrue) {
+                        //       controller.loginRequest();
+                        //     } else {
+                        //       controller.registerRequest();
+                        //     }
+                        //   }
+                        // },
                         textAlign: TextAlign.left,
                         controller: controller.passwordTextController,
                         inputAction: TextInputAction.done,

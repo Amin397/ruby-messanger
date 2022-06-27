@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/MainModel/GetRouts.dart';
 import 'package:rubymessanger/MainModel/chat_model.dart';
+import 'package:rubymessanger/main.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
+
+  final GlobalKey scaffoldKey = GlobalKey<ScaffoldState>();
+
+  late final WebSocketChannel? channel;
+
+
   late AnimationController animatedIconController;
   RxBool isCollapsed = false.obs;
 
@@ -75,6 +84,8 @@ class HomeController extends GetxController
 
   @override
   void onInit() {
+    super.onInit();
+
     if (Get.isDarkMode) {
       isDark(true);
     }
@@ -86,7 +97,11 @@ class HomeController extends GetxController
 
     update();
 
-    super.onInit();
+
+    channel = WebSocketChannel.connect(
+      Uri.parse('ws://${baseUrl.replaceAll('http://', '')}ws/?token=${Blocs.user.accessToken}'),
+    );
+
   }
 
   void openMenu() async {
@@ -125,4 +140,13 @@ class HomeController extends GetxController
       });
     }
   }
+
+
+  @override
+  void dispose() {
+
+    channel!.sink.close();
+    super.dispose();
+  }
+
 }

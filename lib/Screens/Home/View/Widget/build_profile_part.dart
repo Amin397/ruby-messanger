@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
 
@@ -13,55 +15,62 @@ class BuildProfilePart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: Get.width,
-      height: Get.height * .15,
-      child: Row(
-        children: [
-          Expanded(
-            child: SizedBox(
-              height: double.maxFinite,
-              width: double.maxFinite,
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: double.maxFinite,
-                    height: Get.height * .08,
-                    child: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: AutoSizeText(
-                        'Amin Khademi',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Expanded(
-                    child: SizedBox(
-                      height: double.maxFinite,
-                      width: double.maxFinite,
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: AutoSizeText(
-                          '09383974483',
-                          style: TextStyle(
-                            fontSize: 14.0,
+    return StreamBuilder(
+      stream: Blocs.user.getStream,
+      builder: (ctx, i) {
+        return SizedBox(
+          width: Get.width,
+          height: Get.height * .15,
+          child: Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: double.maxFinite,
+                  width: double.maxFinite,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: double.maxFinite,
+                        height: Get.height * .08,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: AutoSizeText(
+                            '${Blocs.user.user.firstName} ${Blocs.user.user.lastName!}',
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                      Expanded(
+                        child: SizedBox(
+                          height: double.maxFinite,
+                          width: double.maxFinite,
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: AutoSizeText(
+                              (Blocs.user.user.phoneNumber == null)
+                                  ? Blocs.user.user.username!
+                                  : Blocs.user.user.phoneNumber!,
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                width: Get.width * .03,
+              ),
+              _buildAvatar()
+            ],
           ),
-          SizedBox(
-            width: Get.width * .03,
-          ),
-          _buildAvatar()
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -71,28 +80,45 @@ class BuildProfilePart extends StatelessWidget {
       height: Get.height * .15,
       child: Stack(
         children: [
-          AnimatedContainer(
-              margin: paddingAll4,
-              duration: const Duration(milliseconds: 300),
-              width: Get.height * .15,
-              height: Get.height * .15,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.red.shade800,
-                  width: 2.5,
+          StreamBuilder(
+            stream: Blocs.user.getStream,
+            builder: (ctx, i) {
+              return AnimatedContainer(
+                margin: paddingAll4,
+                duration: const Duration(milliseconds: 300),
+                width: Get.height * .15,
+                height: Get.height * .15,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.red.shade800,
+                    width: 2.5,
+                  ),
                 ),
-                color: Colors
-                    .primaries[Random().nextInt(Colors.primaries.length)]
-                    .withOpacity(.5),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100.0),
-                child: const Image(
-                  image: AssetImage('assets/images/image.jpg'),
-                  fit: BoxFit.cover,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100.0),
+                  child: (Blocs.user.user.profilePicture is String)
+                      ? FadeInImage(
+                          placeholder: const AssetImage(
+                            'assets/anims/image_loading.gif',
+                          ),
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            Blocs.user.user.profilePicture!,
+                          ),
+                        )
+                      : Image(
+                          image: AssetImage(
+                            (Blocs.user.user.isMale!)
+                                ? 'assets/images/male_image.png'
+                                : 'assets/images/female_image.png',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                 ),
-              )),
+              );
+            },
+          ),
           Align(
             alignment: Alignment.bottomRight,
             child: AnimatedContainer(
