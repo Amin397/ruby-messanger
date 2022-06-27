@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
+import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
 import 'package:rubymessanger/Screens/Home/View/Widget/build_floating_create_new_chat_button_widget.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
@@ -70,7 +71,7 @@ class HomeScreen extends StatelessWidget {
       left: (controller.isNewChat.isTrue) ? Get.width * .55 : -200,
       duration: const Duration(milliseconds: 300),
       child: Container(
-        height: 50.0,
+        padding: paddingAll6,
         width: Get.width * .4,
         decoration: BoxDecoration(
           color: Colors.blue,
@@ -91,11 +92,11 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildCreateNewGroup() {
     return AnimatedPositioned(
-      bottom: Get.width * .38,
+      bottom: Get.width * .35,
       left: (controller.isNewChat.isTrue) ? Get.width * .55 : -200,
       duration: const Duration(milliseconds: 350),
       child: Container(
-        height: 50.0,
+        padding: paddingAll6,
         width: Get.width * .4,
         decoration: BoxDecoration(
           color: Colors.blue,
@@ -116,11 +117,11 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildCreateNewChat() {
     return AnimatedPositioned(
-      bottom: Get.width * .54,
+      bottom: Get.width * .48,
       left: (controller.isNewChat.isTrue) ? Get.width * .55 : -200,
       duration: const Duration(milliseconds: 400),
       child: Container(
-        height: 50.0,
+        padding: paddingAll6,
         width: Get.width * .4,
         decoration: BoxDecoration(
           color: Colors.blue,
