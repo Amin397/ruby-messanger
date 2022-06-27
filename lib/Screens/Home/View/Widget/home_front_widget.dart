@@ -48,24 +48,47 @@ class HomeFrontWidget extends StatelessWidget {
               ),
             ),
             child: AnimationLimiter(
-              child: ListView.separated(
-                separatorBuilder: (BuildContext context, int index) => Divider(
-                  color: Colors.grey[200],
-                ),
-                itemCount: controller.listOfChats.length,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) =>
-                    AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 500),
-                  child: ScaleAnimation(
-                    child: BuildChatItem(
-                      controller: controller,
-                      chat: controller.listOfChats[index],
-                      index: index,
-                    ),
+              child: NotificationListener(
+                child: ListView.separated(
+                  separatorBuilder: (BuildContext context, int index) => Divider(
+                    color: Colors.grey[200],
                   ),
+                  controller: controller.scrollController,
+                  itemCount: controller.listOfChats.length,
+                  // physics: const BouncingScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) =>
+                      AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 500),
+                        child: ScaleAnimation(
+                          child: BuildChatItem(
+                            controller: controller,
+                            chat: controller.listOfChats[index],
+                            index: index,
+                          ),
+                        ),
+                      ),
                 ),
+                onNotification: (ScrollUpdateNotification t) {
+                  // print(controller.scrollController.position.activity!.delegate.axisDirection.name);
+                  // print(t.dragDetails!.delta.direction);
+                  // print(t.dragDetails!.globalPosition.dy);
+                  // if (t.metrics.atEdge) {
+                  //   if (t.metrics.pixels == 0) {
+                  //     print('At top');
+                  //   } else {
+                  //     print('At bottom');
+                  //   }
+                  // }
+                  // print(t.metrics.axisDirection.index);
+                  // if (t is ScrollStartNotification) {
+                    // print("scroll");
+                    // print("detail:"+t.dragDetails.toString());
+                    /// your code
+                    ///
+                  controller.scrollList(t);
+                 return true;
+                },
               ),
             ),
           ),

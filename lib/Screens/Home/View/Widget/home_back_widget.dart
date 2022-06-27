@@ -34,13 +34,16 @@ class HomeBackWidget extends StatelessWidget {
                     BuildProfilePart(
                       controller: controller,
                     ),
-                    Divider(),
+                    const Divider(),
                     _buildMenuItem(
                         icon: const Icon(
                           Icons.settings,
                         ),
                         text: 'Setting'),
-                    _buildMenuItem(icon: Icon(Icons.info), text: 'Info'),
+                    _buildMenuItem(
+                      icon: Icon(Icons.info),
+                      text: 'Info',
+                    ),
                   ],
                 ),
               ),

@@ -7,7 +7,7 @@ import 'package:rubymessanger/main.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class HomeController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+    with GetTickerProviderStateMixin {
 
   final GlobalKey scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -15,11 +15,94 @@ class HomeController extends GetxController
 
 
   late AnimationController animatedIconController;
+  late AnimationController animatedIconController1;
   RxBool isCollapsed = false.obs;
+  RxBool isNewChat = false.obs;
 
   RxBool isDark = false.obs;
+  RxBool scrollTop = true.obs;
 
   List<ChatModel> listOfChats = [
+    ChatModel(
+      fromMe: true,
+      delivered: true,
+      unreadMessage: 0.obs,
+      title: 'Amin Khademi',
+      image: 'assets/images/image.jpg',
+      lastMessage: 'goftam bia inja',
+      seen: true,
+      isSelected: true.obs,
+    ),
+    ChatModel(
+      fromMe: true,
+      delivered: true,
+      unreadMessage: 0.obs,
+      title: 'Amin Khademi',
+      image: 'assets/images/image.jpg',
+      lastMessage: 'goftam bia inja',
+      seen: true,
+      isSelected: true.obs,
+    ),
+    ChatModel(
+      fromMe: true,
+      delivered: true,
+      unreadMessage: 0.obs,
+      title: 'Amin Khademi',
+      image: 'assets/images/image.jpg',
+      lastMessage: 'goftam bia inja',
+      seen: true,
+      isSelected: true.obs,
+    ),
+    ChatModel(
+      fromMe: true,
+      delivered: true,
+      unreadMessage: 0.obs,
+      title: 'Amin Khademi',
+      image: 'assets/images/image.jpg',
+      lastMessage: 'goftam bia inja',
+      seen: true,
+      isSelected: true.obs,
+    ),
+    ChatModel(
+      fromMe: true,
+      delivered: true,
+      unreadMessage: 0.obs,
+      title: 'Amin Khademi',
+      image: 'assets/images/image.jpg',
+      lastMessage: 'goftam bia inja',
+      seen: true,
+      isSelected: true.obs,
+    ),
+    ChatModel(
+      fromMe: true,
+      delivered: true,
+      unreadMessage: 0.obs,
+      title: 'Amin Khademi',
+      image: 'assets/images/image.jpg',
+      lastMessage: 'goftam bia inja',
+      seen: true,
+      isSelected: true.obs,
+    ),
+    ChatModel(
+      fromMe: true,
+      delivered: true,
+      unreadMessage: 0.obs,
+      title: 'Amin Khademi',
+      image: 'assets/images/image.jpg',
+      lastMessage: 'goftam bia inja',
+      seen: true,
+      isSelected: true.obs,
+    ),
+    ChatModel(
+      fromMe: true,
+      delivered: true,
+      unreadMessage: 0.obs,
+      title: 'Amin Khademi',
+      image: 'assets/images/image.jpg',
+      lastMessage: 'goftam bia inja',
+      seen: true,
+      isSelected: true.obs,
+    ),
     ChatModel(
       fromMe: true,
       delivered: true,
@@ -82,14 +165,23 @@ class HomeController extends GetxController
     ),
   ];
 
+   late ScrollController scrollController;
+
   @override
   void onInit() {
     super.onInit();
+
+    scrollController = ScrollController(initialScrollOffset: 0.0);
 
     if (Get.isDarkMode) {
       isDark(true);
     }
     animatedIconController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      reverseDuration: const Duration(milliseconds: 300),
+    );
+    animatedIconController1 = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
       reverseDuration: const Duration(milliseconds: 300),
@@ -113,6 +205,18 @@ class HomeController extends GetxController
       isCollapsed(true);
     }
     update(['menu']);
+  }
+
+  void newChat() async {
+
+    if (isNewChat.isTrue) {
+      animatedIconController1.reverse();
+      isNewChat(false);
+    } else {
+      animatedIconController1.forward();
+      isNewChat(true);
+    }
+    update(['newChat']);
   }
 
   void changeTheme() {
@@ -147,6 +251,15 @@ class HomeController extends GetxController
 
     channel!.sink.close();
     super.dispose();
+  }
+
+  void scrollList(ScrollUpdateNotification t) {
+    if(t.scrollDelta! < 0){
+      scrollTop(true);
+    }else{
+      scrollTop(false);
+    }
+    // print(t.scrollDelta);
   }
 
 }
