@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
+import 'package:rubymessanger/main.dart';
 
 class BuildProfilePart extends StatelessWidget {
   const BuildProfilePart({Key? key, required this.controller})
@@ -35,7 +36,7 @@ class BuildProfilePart extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
-                            '${Blocs.user.user.firstName} ${Blocs.user.user.lastName!}',
+                            '${Blocs.user.user!.firstName} ${Blocs.user.user!.lastName!}',
                             style: const TextStyle(
                               fontSize: 20.0,
                             ),
@@ -49,9 +50,9 @@ class BuildProfilePart extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.topLeft,
                             child: AutoSizeText(
-                              (Blocs.user.user.phoneNumber == null)
-                                  ? Blocs.user.user.username!
-                                  : Blocs.user.user.phoneNumber!,
+                              (Blocs.user.user!.phoneNumber == null)
+                                  ? Blocs.user.user!.username!
+                                  : Blocs.user.user!.phoneNumber!,
                               style: const TextStyle(
                                 fontSize: 14.0,
                               ),
@@ -97,19 +98,19 @@ class BuildProfilePart extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100.0),
-                  child: (Blocs.user.user.profilePicture is String)
+                  child: (Blocs.user.user!.profilePicture is String)
                       ? FadeInImage(
                           placeholder: const AssetImage(
                             'assets/anims/image_loading.gif',
                           ),
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            Blocs.user.user.profilePicture!,
+                            baseUrl + Blocs.user.user!.profilePicture!,
                           ),
                         )
                       : Image(
                           image: AssetImage(
-                            (Blocs.user.user.isMale!)
+                            (Blocs.user.user!.isMale!)
                                 ? 'assets/images/male_image.png'
                                 : 'assets/images/female_image.png',
                           ),

@@ -25,6 +25,7 @@ class HomeController extends GetxController
   List<ChatModel> listOfChats = [
     ChatModel(
       fromMe: true,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -35,6 +36,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: false,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -45,6 +47,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: false,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -55,6 +58,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -65,6 +69,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -75,6 +80,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -85,6 +91,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -95,6 +102,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -105,6 +113,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -115,6 +124,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: false,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -125,6 +135,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: false,
       delivered: false,
       unreadMessage: 12.obs,
       title: 'Amin Khademi',
@@ -135,6 +146,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -145,6 +157,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: false,
+      gender: true,
       delivered: true,
       unreadMessage: 0.obs,
       title: 'Amin Khademi',
@@ -155,6 +168,7 @@ class HomeController extends GetxController
     ),
     ChatModel(
       fromMe: true,
+      gender: true,
       delivered: false,
       unreadMessage: 5.obs,
       title: 'Amin Khademi',

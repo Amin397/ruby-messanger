@@ -54,17 +54,6 @@ class BuildChatItem extends StatelessWidget {
   }
 
   Widget _buildAvatar() {
-    String name = '';
-    List<String> nameAvatar = [];
-    if (chat.title.contains(' ')) {
-      nameAvatar = chat.title.split(' ');
-    }
-
-    for (var o in nameAvatar) {
-      print(o.substring(0, 1));
-      name = name + o.substring(0, 1).toUpperCase();
-    }
-
     return Stack(
       children: [
         Obx(
@@ -80,33 +69,23 @@ class BuildChatItem extends StatelessWidget {
                     : Colors.grey,
                 width: (chat.isSelected.isTrue) ? 2.5 : 1.0,
               ),
-              color: (chat.image!.length > 5)
-                  ? Colors.transparent
-                  : Colors.primaries[Random().nextInt(Colors.primaries.length)]
-                      .withOpacity(.5),
             ),
-            child: (chat.image!.length > 5)
-                ? Hero(
-                    tag: 'chatProfile-$index',
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50.0),
-                      child: Image(
-                        image: AssetImage(chat.image!),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  )
-                : Center(
-                    child: AutoSizeText(
-                      name,
-                      maxFontSize: 18.0,
-                      minFontSize: 10.0,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ),
+            child: Hero(
+              tag: 'chatProfile-$index',
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(50.0),
+                child: Image(
+                  image: (chat.image!.length > 5)
+                      ? AssetImage(chat.image!)
+                      : AssetImage(
+                          (chat.gender!)
+                              ? 'assets/images/male_image.png'
+                              : 'assets/images/female_image.png',
+                        ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
         ),
         Obx(

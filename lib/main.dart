@@ -6,7 +6,7 @@ import 'package:rubymessanger/Theme/themes.dart';
 import 'MainModel/GetRouts.dart';
 
 
-String baseUrl = 'http://ruby.alirn.ir/';
+String baseUrl = 'http://ruby.alirn.ir';
 Future<void> main() async {
 
   ///TODO : add 2 language

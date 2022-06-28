@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:rubymessanger/Utils/view_utils.dart';
 
 import '../Const/web_controllers.dart';
 import '../Const/web_methods.dart';
@@ -32,77 +33,102 @@ class RequestsUtil {
     print('type: \n');
     print(type);
 
-    switch (type) {
-      case 'post':
-        {
-          try {
-            response = await http.post(
-              makePath(
-                webMethod: webMethod,
-                webController: webController,
-                optionalController: optionalWebMethod,
-              ),
-              body: body,
-              headers: headers,
-            );
-          } catch (e) {
-            print(e);
-          }
 
-          break;
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+
+        switch (type) {
+          case 'post':
+            {
+              try {
+                response = await http.post(
+                  makePath(
+                    webMethod: webMethod,
+                    webController: webController,
+                    optionalController: optionalWebMethod,
+                  ),
+                  body: body,
+                  headers: headers,
+                ).timeout(const Duration(seconds: 40) , onTimeout: (){
+                  ViewUtils.showError(errorMessage: 'Something went wrong');
+                  return http.Response('Error', 600);
+                });
+              } catch (e) {
+                print(e);
+              }
+
+              break;
+            }
+          case 'put':
+            {
+              try {
+                response = await http.put(
+                  makePath(
+                    webMethod: webMethod,
+                    webController: webController,
+                    optionalController: optionalWebMethod,
+                  ),
+                  body: body,
+                  headers: headers,
+                ).timeout(const Duration(seconds: 40) , onTimeout: (){
+                  ViewUtils.showError(errorMessage: 'Something went wrong');
+                  return http.Response('Error', 600);
+                });
+              } catch (e) {
+                print(e);
+              }
+              break;
+            }
+          case 'patch':
+            {
+              try {
+                response = await http.patch(
+                  makePath(
+                    webMethod: webMethod,
+                    webController: webController,
+                    optionalController: optionalWebMethod,
+                  ),
+                  body: body,
+                  headers: headers,
+                ).timeout(const Duration(seconds: 40) , onTimeout: (){
+                  ViewUtils.showError(errorMessage: 'Something went wrong');
+                  return http.Response('Error', 600);
+                });
+              } catch (e) {
+                print(e);
+              }
+              break;
+            }
+          case 'get':
+            {
+              try {
+                response = await http.get(
+                  makePath(
+                    webMethod: webMethod,
+                    webController: webController,
+                    optionalController: optionalWebMethod,
+                  ),
+                  headers: headers,
+                ).timeout(const Duration(seconds: 40) , onTimeout: (){
+                  ViewUtils.showError(errorMessage: 'Something went wrong');
+                  return http.Response('Error', 600);
+                });
+              } catch (e) {
+                print(e);
+              }
+              break;
+            }
         }
-      case 'put':
-        {
-          try {
-            response = await http.put(
-              makePath(
-                webMethod: webMethod,
-                webController: webController,
-                optionalController: optionalWebMethod,
-              ),
-              body: body,
-              headers: headers,
-            );
-          } catch (e) {
-            print(e);
-          }
-          break;
-        }
-      case 'patch':
-        {
-          try {
-            response = await http.patch(
-              makePath(
-                webMethod: webMethod,
-                webController: webController,
-                optionalController: optionalWebMethod,
-              ),
-              body: body,
-              headers: headers,
-            );
-          } catch (e) {
-            print('TTTTTTTTTTTTTTTTTTTTTTT');
-            print(e);
-          }
-          break;
-        }
-      case 'get':
-        {
-          try {
-            response = await http.get(
-              makePath(
-                webMethod: webMethod,
-                webController: webController,
-                optionalController: optionalWebMethod,
-              ),
-              headers: headers,
-            );
-          } catch (e) {
-            print(e);
-          }
-          break;
-        }
+
+      }
+    } on SocketException catch (_) {
+      response = http.Response('connection field', 700);
+      // isTimeOut(true);
     }
+
+
+
 
     print('status Code: \n');
     print(response.statusCode);
@@ -211,67 +237,18 @@ class RequestsUtil {
     return response;
   }
 
-  Uri makePath(
-      {required WebControllers webController,
-      required WebMethods webMethod,
-      WebControllers? optionalController}) {
+  Uri makePath({required WebControllers webController,
+    required WebMethods webMethod,
+    WebControllers? optionalController}) {
     if (optionalController != null) {
       return Uri.parse(
-          '$baseUrl${optionalController.name}/${webController.name}/${webMethod.name}/'
+          '$baseUrl/${optionalController.name}/${webController.name}/${webMethod
+              .name}/'
               .replaceAll('_', '-'));
     } else {
       return Uri.parse(
-          '$baseUrl${webController.name}/${webMethod.name}/'
+          '$baseUrl/${webController.name}/${webMethod.name}/'
               .replaceAll('_', '-'));
     }
   }
-
-//
-// Future<ApiResult> makeRequest({
-//   required WebControllers webController,
-//   required WebMethods webMethod,
-//   Map body = const {},
-// }) async {
-//   String url = _makePath(webController, webMethod);
-//   if (debug) {
-//     print("Request url: $url\nRequest body: ${jsonEncode(body)}\n");
-//   }
-//   Response response = await post(
-//     url,
-//     body,
-//     headers: {
-//       'token': RequestsUtil.token!,
-//     },
-//   );
-//   ApiResult apiResult = ApiResult();
-//   print(response.body);
-//   if (response.statusCode == 200) {
-//     try {
-//       if (debug) {
-//         print(response.body);
-//       }
-//       Map data = jsonDecode(response.body);
-//       apiResult.isDone = data['isDone'] == true;
-//       apiResult.requestedMethod = data['requestedMethod'].toString();
-//       apiResult.data = data['data'];
-//     } catch (e) {
-//       apiResult.isDone = false;
-//       apiResult.requestedMethod = webMethod.toString().split('.').last;
-//       apiResult.data = response.body;
-//     }
-//   } else {
-//     apiResult.isDone = false;
-//   }
-//   if (debug) {
-//     print(
-//         "\nRequest url: $url\nRequest body: ${jsonEncode(body)}\nResponse: {"
-//         "status: ${response.statusCode}\n"
-//         "isDone: ${apiResult.isDone}\n"
-//         "requestedMethod: ${apiResult.requestedMethod}\n"
-//         "data: ${apiResult.data}"
-//         "}");
-//   }
-//   return apiResult;
-// }
-//
 }

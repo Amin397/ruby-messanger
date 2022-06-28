@@ -6,12 +6,14 @@ class ChatModel {
   String? lastMessage;
   late bool fromMe;
   bool? seen;
+  bool? gender;
   bool? delivered;
   RxInt unreadMessage;
   RxBool isSelected;
 
   ChatModel({
     this.image,
+    this.gender,
     required this.title,
     required this.isSelected,
     this.lastMessage,

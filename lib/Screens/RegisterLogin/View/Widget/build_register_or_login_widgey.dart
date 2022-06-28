@@ -88,11 +88,14 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
                         maxLines: 1,
                         textAlign: TextAlign.left,
                         controller: controller.userNameTextController,
-                        inputAction: TextInputAction.done,
+                        inputAction: TextInputAction.next,
                         width: Get.width * .9,
                         height: Get.height * .1,
-                        autoFocus: true,
+                        autoFocus: false,
                         enable: true,
+                        func: (s){
+
+                        },
                         onChange: (s) {
                           if (s.length > 5) {
                             print(s);
@@ -131,44 +134,15 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
                       ),
                       WidgetUtils.textFormField(
                         maxLines: 1,
-                        // func: (s) {
-                        //   if (controller.userNameTextController.text.isEmpty) {
-                        //     ViewUtils.showError(
-                        //       errorMessage: 'Please enter your Username',
-                        //     );
-                        //   } else if (controller
-                        //           .userNameTextController.text.length <=
-                        //       4) {
-                        //     ViewUtils.showError(
-                        //       errorMessage:
-                        //           'The value entered must be more than 4 characters',
-                        //     );
-                        //   } else if (controller
-                        //       .passwordTextController.text.isEmpty) {
-                        //     ViewUtils.showError(
-                        //       errorMessage: 'Please enter your Password',
-                        //     );
-                        //   } else if (controller
-                        //           .passwordTextController.text.length <
-                        //       10) {
-                        //     ViewUtils.showError(
-                        //       errorMessage:
-                        //           'The value entered must be more than 10 characters',
-                        //     );
-                        //   } else {
-                        //     if (controller.isLogin.isTrue) {
-                        //       controller.loginRequest();
-                        //     } else {
-                        //       controller.registerRequest();
-                        //     }
-                        //   }
-                        // },
+                        func: (s){
+
+                        },
                         textAlign: TextAlign.left,
                         controller: controller.passwordTextController,
                         inputAction: TextInputAction.done,
                         width: Get.width * .9,
                         height: Get.height * .1,
-                        autoFocus: true,
+                        autoFocus: false,
                         enable: true,
                         onChange: (s) {
                           controller.onChangePassword(text: s);
@@ -232,9 +206,9 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
       height: Get.height * .05,
       borderRadius: 8,
       resetAfterDuration: true,
-      resetDuration: const Duration(
-        seconds: 5,
-      ),
+      // resetDuration: const Duration(
+      //   seconds: 5,
+      // ),
       color: ColorUtils.mainColor,
       controller: controller.btnController,
       onPressed: () {

@@ -111,6 +111,9 @@ class BuildCompleteRegisterNameAndGenderWidget extends StatelessWidget {
               autoFocus: false,
               enable: true,
               label: '',
+              func: (s){
+
+              },
               borderColor: Colors.grey,
               fillColor: Colors.white,
               focusedColor: ColorUtils.mainDarkColor,

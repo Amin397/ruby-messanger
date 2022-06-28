@@ -13,7 +13,7 @@ class UserBloc {
 
 
 
-  late UserModel user;
+  UserModel? user;
   String accessToken = '';
   String refreshToken = '';
 
@@ -25,12 +25,12 @@ class UserBloc {
   }
 
   void setUserProfileImage({required String image}){
-    user.profilePicture = baseUrl + image;
+    user!.profilePicture = baseUrl + image;
     streamController.sink.add(user);
   }
 
   void removeUserProfileImage(){
-    user.profilePicture = '';
+    user!.profilePicture = '';
     streamController.sink.add(user);
   }
 

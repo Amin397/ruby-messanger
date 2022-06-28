@@ -67,5 +67,4 @@ class SingleChatAppBarWidget extends StatelessWidget {
       ),
     );
   }
-
 }
