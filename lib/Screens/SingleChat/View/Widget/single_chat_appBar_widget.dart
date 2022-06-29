@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/SingleChat/Controller/single_chat_controller.dart';
 import 'package:rubymessanger/Screens/SingleChat/View/Widget/build_normal_appbar_widget.dart';
@@ -21,21 +22,8 @@ class SingleChatAppBarWidget extends StatelessWidget {
       height: Get.height * .1,
       decoration: BoxDecoration(
         color:
-            (Get.isDarkMode) ? Colors.blueGrey.shade800 : Colors.red.shade800,
-        boxShadow: (Get.isDarkMode)
-            ? [
-                const BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10.0,
-                  spreadRadius: 2.0,
-                )
-              ]
-            : ViewUtils.shadow(
-                offset: const Offset(
-                  0.0,
-                  3.0,
-                ),
-              ),
+            (Get.isDarkMode) ? ColorUtils.mainDarkColor : ColorUtils.mainColor,
+        boxShadow: ViewUtils.shadow(),
       ),
       child: Column(
         children: [

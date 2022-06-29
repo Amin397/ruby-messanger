@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
+import 'package:rubymessanger/MainModel/GetRouts.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
 import 'package:rubymessanger/Screens/Home/View/Widget/build_floating_create_new_chat_button_widget.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
@@ -120,21 +121,29 @@ class HomeScreen extends StatelessWidget {
       bottom: Get.width * .48,
       left: (controller.isNewChat.isTrue) ? Get.width * .55 : -200,
       duration: const Duration(milliseconds: 400),
-      child: Container(
-        padding: paddingAll6,
-        width: Get.width * .4,
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          boxShadow: ViewUtils.shadow(),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(50.0),
-            bottomLeft: Radius.circular(50.0),
-            topRight: Radius.circular(50.0),
+      child: GestureDetector(
+        onTap: () {
+          controller.newChat();
+          Get.toNamed(
+            NameRouts.newChat,
+          );
+        },
+        child: Container(
+          padding: paddingAll6,
+          width: Get.width * .4,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            boxShadow: ViewUtils.shadow(),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(50.0),
+              bottomLeft: Radius.circular(50.0),
+              topRight: Radius.circular(50.0),
+            ),
           ),
-        ),
-        child: _buildNewCardDetail(
-          icon: Icons.person_add,
-          title: 'New Chat',
+          child: _buildNewCardDetail(
+            icon: Icons.person_add,
+            title: 'New Chat',
+          ),
         ),
       ),
     );

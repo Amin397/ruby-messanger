@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/Const/Consts.dart';
+import 'package:rubymessanger/MainModel/GetRouts.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
 import 'package:rubymessanger/main.dart';
 
@@ -84,9 +85,8 @@ class BuildProfilePart extends StatelessWidget {
           StreamBuilder(
             stream: Blocs.user.getStream,
             builder: (ctx, i) {
-              return AnimatedContainer(
+              return Container(
                 margin: paddingAll4,
-                duration: const Duration(milliseconds: 300),
                 width: Get.height * .15,
                 height: Get.height * .15,
                 decoration: BoxDecoration(
@@ -122,19 +122,23 @@ class BuildProfilePart extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: Get.width * .1,
-              width: Get.width * .1,
-              decoration: BoxDecoration(
-                color: Colors.red.shade800,
-                shape: BoxShape.circle,
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.edit,
-                  color: Colors.white,
-                  size: 20.0,
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(NameRouts.editProfile);
+              },
+              child: Container(
+                height: Get.width * .1,
+                width: Get.width * .1,
+                decoration: BoxDecoration(
+                  color: Colors.red.shade800,
+                  shape: BoxShape.circle,
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                    size: 20.0,
+                  ),
                 ),
               ),
             ),

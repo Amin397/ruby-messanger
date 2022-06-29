@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 
 
@@ -95,6 +96,19 @@ class WidgetUtils{
             ),
           ),
         ),
+      ),
+    );
+  }
+
+
+  static Widget backButton(){
+    return IconButton(
+      onPressed: () {
+        Get.back();
+      },
+      icon: const Icon(
+        Icons.arrow_forward_ios,
+        color: Colors.white,
       ),
     );
   }

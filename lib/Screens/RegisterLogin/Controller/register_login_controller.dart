@@ -53,7 +53,7 @@ class RegisterLoginController extends GetxController {
     )
         .then((value) {
       switch (value.statusCode) {
-        case 201:
+        case 202:
           {
             resMap = jsonDecode(value.body);
 
@@ -71,6 +71,30 @@ class RegisterLoginController extends GetxController {
 
             break;
           }
+        case 600:
+          {
+            ViewUtils.showError(
+              errorMessage: 'Something went wrong',
+            );
+            btnController.error();
+
+
+            Future.delayed(Duration(seconds: 2) , (){
+              btnController.reset();
+            });
+            break;
+          }
+        case 700:
+          {
+            ViewUtils.showError(
+              errorMessage: 'Something went wrong',
+            );
+            btnController.error();
+            Future.delayed(Duration(seconds: 2) , (){
+              btnController.reset();
+            });
+            break;
+          }
         default:
           {
             resMap = jsonDecode(value.body);
@@ -78,6 +102,9 @@ class RegisterLoginController extends GetxController {
             ViewUtils.showError(
               errorMessage: resMap['detail'],
             );
+            Future.delayed(Duration(seconds: 3) , (){
+              btnController.reset();
+            });
             break;
           }
       }
@@ -93,6 +120,9 @@ class RegisterLoginController extends GetxController {
       switch (value.statusCode) {
         case 200:
           {
+            Blocs.user.setUserData(
+              userData: jsonDecode(value.body),
+            );
             btnController.success();
             Future.delayed(const Duration(seconds: 1), () {
               Get.offAndToNamed(

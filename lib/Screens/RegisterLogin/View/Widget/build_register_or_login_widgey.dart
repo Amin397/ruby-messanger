@@ -205,7 +205,7 @@ class BuildRegisterOrLoginWidget extends StatelessWidget {
       width: Get.width,
       height: Get.height * .05,
       borderRadius: 8,
-      resetAfterDuration: true,
+      resetAfterDuration: false,
       // resetDuration: const Duration(
       //   seconds: 5,
       // ),

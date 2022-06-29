@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/MainModel/GetRouts.dart';
@@ -6,13 +7,10 @@ import 'package:rubymessanger/MainModel/chat_model.dart';
 import 'package:rubymessanger/main.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-class HomeController extends GetxController
-    with GetTickerProviderStateMixin {
-
+class HomeController extends GetxController with GetTickerProviderStateMixin {
   final GlobalKey scaffoldKey = GlobalKey<ScaffoldState>();
 
   late final WebSocketChannel? channel;
-
 
   late AnimationController animatedIconController;
   late AnimationController animatedIconController1;
@@ -179,10 +177,11 @@ class HomeController extends GetxController
     ),
   ];
 
-   late ScrollController scrollController;
+  late ScrollController scrollController;
 
   @override
-  void onInit() {
+  void onInit(){
+    getPermission();
     super.onInit();
 
     scrollController = ScrollController(initialScrollOffset: 0.0);
@@ -201,13 +200,15 @@ class HomeController extends GetxController
       reverseDuration: const Duration(milliseconds: 300),
     );
 
-    update();
-
 
     channel = WebSocketChannel.connect(
-      Uri.parse('ws://${baseUrl.replaceAll('http://', '')}ws/?token=${Blocs.user.accessToken}'),
+      Uri.parse(
+          'ws://${baseUrl.replaceAll('http://', '')}ws/?token=${Blocs.user.accessToken}'),
     );
+  }
 
+  getPermission()async{
+    await FlutterContacts.requestPermission();
   }
 
   void openMenu() async {
@@ -222,7 +223,6 @@ class HomeController extends GetxController
   }
 
   void newChat() async {
-
     if (isNewChat.isTrue) {
       animatedIconController1.reverse();
       isNewChat(false);
@@ -248,32 +248,32 @@ class HomeController extends GetxController
     item.isSelected(true);
   }
 
-  void tapOnChat({required ChatModel item, required int index,}) {
+  void tapOnChat({
+    required ChatModel item,
+    required int index,
+  }) {
     if (listOfChats.any((element) => element.isSelected.isTrue)) {
       item.isSelected(!item.isSelected.value);
     } else {
-      Get.toNamed(NameRouts.singleChat, arguments:{
-        'index':index,
-        'item':item,
+      Get.toNamed(NameRouts.singleChat, arguments: {
+        'index': index,
+        'item': item,
       });
     }
   }
 
-
   @override
   void dispose() {
-
     channel!.sink.close();
     super.dispose();
   }
 
   void scrollList(ScrollUpdateNotification t) {
-    if(t.scrollDelta! < 0){
+    if (t.scrollDelta! < 0) {
       scrollTop(true);
-    }else{
+    } else {
       scrollTop(false);
     }
     // print(t.scrollDelta);
   }
-
 }
