@@ -144,8 +144,8 @@ class RegisterLoginController extends GetxController {
 
     request
         .register(
-      userName: userNameTextController.text,
-      password: passwordTextController.text,
+      userName: userNameTextController.text.trim(),
+      password: passwordTextController.text.trim(),
     )
         .then((value) {
       switch (value.statusCode) {
@@ -180,6 +180,9 @@ class RegisterLoginController extends GetxController {
             ViewUtils.showError(
               errorMessage: resMap['username'][0],
             );
+            Future.delayed(Duration(seconds: 3) , (){
+              btnController.reset();
+            });
             break;
           }
       }

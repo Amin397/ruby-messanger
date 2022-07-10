@@ -96,26 +96,29 @@ class BuildProfilePart extends StatelessWidget {
                     width: 2.5,
                   ),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100.0),
-                  child: (Blocs.user.user!.profilePicture is String)
-                      ? FadeInImage(
-                          placeholder: const AssetImage(
-                            'assets/anims/image_loading.gif',
+                child: Hero(
+                  tag: 'profileImage',
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100.0),
+                    child: (Blocs.user.user!.profilePicture is String)
+                        ? FadeInImage(
+                            placeholder: const AssetImage(
+                              'assets/anims/image_loading.gif',
+                            ),
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              baseUrl + Blocs.user.user!.profilePicture!,
+                            ),
+                          )
+                        : Image(
+                            image: AssetImage(
+                              (Blocs.user.user!.isMale!)
+                                  ? 'assets/images/male_image.png'
+                                  : 'assets/images/female_image.png',
+                            ),
+                            fit: BoxFit.cover,
                           ),
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            baseUrl + Blocs.user.user!.profilePicture!,
-                          ),
-                        )
-                      : Image(
-                          image: AssetImage(
-                            (Blocs.user.user!.isMale!)
-                                ? 'assets/images/male_image.png'
-                                : 'assets/images/female_image.png',
-                          ),
-                          fit: BoxFit.cover,
-                        ),
+                  ),
                 ),
               );
             },

@@ -140,6 +140,8 @@ class CompleteProfileController extends GetxController {
             lastName: lastNameController.text)
         .then((value) async{
       if (value.statusCode == 200) {
+
+        Blocs.user.setUserData(userData: jsonDecode(value.body));
         await StorageUtils.setFirstLogin(isFirst: true);
         Get.toNamed(
           NameRouts.home,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/MainModel/GetRouts.dart';
@@ -181,6 +180,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   @override
   void onInit(){
+
+
     getPermission();
     super.onInit();
 
@@ -208,7 +209,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   getPermission()async{
-    await FlutterContacts.requestPermission();
+    // await FlutterContacts.requestPermission();
   }
 
   void openMenu() async {

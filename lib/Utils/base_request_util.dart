@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
@@ -9,11 +11,11 @@ import '../Const/web_methods.dart';
 import '../main.dart';
 
 class RequestsUtil {
-  Future<http.Response> makeRequest({
+  Future<http.Response> makeHttpRequest({
     required WebMethods webMethod,
     required WebControllers webController,
     WebControllers? optionalWebMethod,
-    Map body = const {},
+    Object body = const {},
     Map<String, String> headers = const {},
     required String type,
   }) async {
@@ -33,16 +35,15 @@ class RequestsUtil {
     print('type: \n');
     print(type);
 
-
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-
         switch (type) {
           case 'post':
             {
               try {
-                response = await http.post(
+                response = await http
+                    .post(
                   makePath(
                     webMethod: webMethod,
                     webController: webController,
@@ -50,7 +51,8 @@ class RequestsUtil {
                   ),
                   body: body,
                   headers: headers,
-                ).timeout(const Duration(seconds: 40) , onTimeout: (){
+                )
+                    .timeout(const Duration(seconds: 40), onTimeout: () {
                   ViewUtils.showError(errorMessage: 'Something went wrong');
                   return http.Response('Error', 600);
                 });
@@ -63,7 +65,8 @@ class RequestsUtil {
           case 'put':
             {
               try {
-                response = await http.put(
+                response = await http
+                    .put(
                   makePath(
                     webMethod: webMethod,
                     webController: webController,
@@ -71,7 +74,8 @@ class RequestsUtil {
                   ),
                   body: body,
                   headers: headers,
-                ).timeout(const Duration(seconds: 40) , onTimeout: (){
+                )
+                    .timeout(const Duration(seconds: 40), onTimeout: () {
                   ViewUtils.showError(errorMessage: 'Something went wrong');
                   return http.Response('Error', 600);
                 });
@@ -83,7 +87,8 @@ class RequestsUtil {
           case 'patch':
             {
               try {
-                response = await http.patch(
+                response = await http
+                    .patch(
                   makePath(
                     webMethod: webMethod,
                     webController: webController,
@@ -91,7 +96,8 @@ class RequestsUtil {
                   ),
                   body: body,
                   headers: headers,
-                ).timeout(const Duration(seconds: 40) , onTimeout: (){
+                )
+                    .timeout(const Duration(seconds: 40), onTimeout: () {
                   ViewUtils.showError(errorMessage: 'Something went wrong');
                   return http.Response('Error', 600);
                 });
@@ -103,14 +109,16 @@ class RequestsUtil {
           case 'get':
             {
               try {
-                response = await http.get(
+                response = await http
+                    .get(
                   makePath(
                     webMethod: webMethod,
                     webController: webController,
                     optionalController: optionalWebMethod,
                   ),
                   headers: headers,
-                ).timeout(const Duration(seconds: 40) , onTimeout: (){
+                )
+                    .timeout(const Duration(seconds: 40), onTimeout: () {
                   ViewUtils.showError(errorMessage: 'Something went wrong');
                   return http.Response('Error', 600);
                 });
@@ -120,15 +128,11 @@ class RequestsUtil {
               break;
             }
         }
-
       }
     } on SocketException catch (_) {
       response = http.Response('connection field', 700);
       // isTimeOut(true);
     }
-
-
-
 
     print('status Code: \n');
     print(response.statusCode);
@@ -139,7 +143,7 @@ class RequestsUtil {
     return response;
   }
 
-  Future<Response> makeFileRequest({
+  Future<http.Response> makeFileHttpRequest({
     required WebMethods webMethod,
     required WebControllers webController,
     WebControllers? optionalWebController,
@@ -149,7 +153,7 @@ class RequestsUtil {
   }) async {
     late http.MultipartRequest request;
     late http.StreamedResponse response1;
-    late Response response;
+    late http.Response response;
 
     print('Path: \n');
     print(makePath(webController: webController, webMethod: webMethod)
@@ -237,18 +241,17 @@ class RequestsUtil {
     return response;
   }
 
-  Uri makePath({required WebControllers webController,
-    required WebMethods webMethod,
-    WebControllers? optionalController}) {
+  static Uri makePath(
+      {required WebControllers webController,
+      required WebMethods webMethod,
+      WebControllers? optionalController}) {
     if (optionalController != null) {
       return Uri.parse(
-          '$baseUrl/${optionalController.name}/${webController.name}/${webMethod
-              .name}/'
+          '$baseUrl/${optionalController.name}/${webController.name}/${webMethod.name}/'
               .replaceAll('_', '-'));
     } else {
-      return Uri.parse(
-          '$baseUrl/${webController.name}/${webMethod.name}/'
-              .replaceAll('_', '-'));
+      return Uri.parse('$baseUrl/${webController.name}/${webMethod.name}/'
+          .replaceAll('_', '-'));
     }
   }
 }

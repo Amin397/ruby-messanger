@@ -1,18 +1,23 @@
+
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:rubymessanger/Bloc/blocs.dart';
 
 import '../Const/web_controllers.dart';
 import '../Const/web_methods.dart';
+import 'base_dio_request_util.dart';
 import 'base_request_util.dart';
 
-class ProjectRequestUtils extends RequestsUtil {
+class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
   //sd
 
   Future<http.Response> register({
     String? userName,
     String? password,
   }) async {
-    return await makeRequest(
+    return await makeHttpRequest(
         webMethod: WebMethods.register,
         webController: WebControllers.user,
         type: 'post',
@@ -26,7 +31,7 @@ class ProjectRequestUtils extends RequestsUtil {
     String? userName,
     String? password,
   }) async {
-    return await makeRequest(
+    return await makeHttpRequest(
         webMethod: WebMethods.login,
         webController: WebControllers.user,
         type: 'post',
@@ -43,7 +48,7 @@ class ProjectRequestUtils extends RequestsUtil {
     String? bio,
     required int gender,
   }) async {
-    return await makeRequest(
+    return await makeHttpRequest(
         webMethod: WebMethods.profile,
         webController: WebControllers.user,
         type: 'put',
@@ -55,40 +60,38 @@ class ProjectRequestUtils extends RequestsUtil {
           'first_name': firstName,
           'last_name': lastName,
           'bio': bio,
-          'is_male': (gender == 0)?'true':'false',
+          'is_male': (gender == 0) ? 'true' : 'false',
         });
   }
 
   Future<http.Response> uploadProfileImage({required String filePath}) async {
-    return await makeFileRequest(
+    return await makeFileHttpRequest(
       webMethod: WebMethods.picture,
       webController: WebControllers.profile,
       type: 'put',
       filePath: filePath,
       optionalWebController: WebControllers.user,
       // headers: 'Bearer ${Blocs.user.accessToken}',
-      headers:
-          'Bearer ${Blocs.user.accessToken}',
+      headers: 'Bearer ${Blocs.user.accessToken}',
     );
   }
 
   Future<http.Response> removeProfileImage() async {
-    return await makeRequest(
+    return await makeHttpRequest(
       webMethod: WebMethods.picture,
       webController: WebControllers.profile,
       optionalWebMethod: WebControllers.user,
       type: 'put',
       body: {'profile_picture': ''},
       headers: {
-        'Authorization':
-            'Bearer ${Blocs.user.accessToken}',
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
       },
       // headers: 'Bearer ${Blocs.user.accessToken}',
     );
   }
 
   Future<http.Response> getUserData() async {
-    return await makeRequest(
+    return await makeHttpRequest(
       webMethod: WebMethods.profile,
       webController: WebControllers.user,
       type: 'get',
@@ -99,7 +102,7 @@ class ProjectRequestUtils extends RequestsUtil {
   }
 
   Future<http.Response> sendMobile({required String mobileNumber}) async {
-    return await makeRequest(
+    return await makeHttpRequest(
         webMethod: WebMethods.submit_phone,
         webController: WebControllers.user,
         type: 'patch',
@@ -111,8 +114,21 @@ class ProjectRequestUtils extends RequestsUtil {
         });
   }
 
+  Future<Response> sendContacts({required List mobileNumbers}) async {
+    return await makeDioRequest(
+      webMethod: WebMethods.contact,
+      webController: WebControllers.user,
+      type: 'post',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+      body: mobileNumbers,
+
+    );
+  }
+
   Future<http.Response> checkOtpCode({required String code}) async {
-    return await makeRequest(
+    return await makeHttpRequest(
         webMethod: WebMethods.submit_otp,
         webController: WebControllers.user,
         type: 'post',

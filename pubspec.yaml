@@ -49,8 +49,9 @@ dependencies:
   dotted_border: ^2.0.0+2
   image_cropper: ^2.0.3
   web_socket_channel: ^2.2.0
-  flutter_contacts: ^1.1.5
+  contacts_service: ^0.6.3
   permission_handler: ^10.0.0
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:

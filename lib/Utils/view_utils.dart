@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
 
 class ViewUtils {
@@ -35,8 +36,6 @@ class ViewUtils {
         horizontal: Get.width * .03,
       ),
       boxShadows: ViewUtils.shadow(),
-
-
     );
   }
 
@@ -60,10 +59,10 @@ class ViewUtils {
     );
   }
 
-
-  static void onChange({String? string,
-    TextEditingController? textEditingController,
-    Function? func}) {
+  static void onChange(
+      {String? string,
+      TextEditingController? textEditingController,
+      Function? func}) {
     func!();
     List<String> list = string!.split('');
     if (list.length > 0) {
@@ -98,8 +97,7 @@ class ViewUtils {
       }
       Future.delayed(
         Duration.zero,
-            () =>
-        textEditingController!.selection = TextSelection.fromPosition(
+        () => textEditingController!.selection = TextSelection.fromPosition(
           TextPosition(
             offset: textEditingController.text.length,
           ),
@@ -108,6 +106,11 @@ class ViewUtils {
     }
   }
 
-
-
+  static Widget loadingAnimation() {
+    return Center(
+      child: CircularProgressIndicator(
+        color: ColorUtils.mainColor,
+      ),
+    );
+  }
 }

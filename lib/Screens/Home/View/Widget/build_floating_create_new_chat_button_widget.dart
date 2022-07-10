@@ -1,5 +1,8 @@
+
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
@@ -27,6 +30,7 @@ class BuildFloatingCreateNewChatButtonWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         controller.newChat();
+        // log(Blocs.user.accessToken);
       },
       child: Container(
         height: Get.width * .155,
