@@ -4,6 +4,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rubymessanger/MainModel/GetRouts.dart';
 import 'package:rubymessanger/Screens/NewChat/View/Widgets/add_new_contact_modal_bottom_sheet.dart';
 import 'package:rubymessanger/Utils/project_request_utils.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
@@ -149,5 +150,12 @@ class NewChatController extends GetxController {
     });
 
     isLoaded(true);
+  }
+
+  void goToProfile({required ContactModel contact , int? index}) {
+    Get.toNamed(NameRouts.contactProfile , arguments: {
+      'contact':contact,
+      'index':index
+    });
   }
 }

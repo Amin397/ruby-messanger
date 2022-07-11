@@ -26,19 +26,27 @@ class BuildContactItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: Get.width,
-      height: Get.height * .07,
-      padding: paddingAll4,
-      child: Row(
-        children: [
-          (!contact.isRubyUser!) ? _buildInviteCard() : const SizedBox(),
-          _buildContactBody(),
-          SizedBox(
-            width: Get.width * .03,
-          ),
-          _buildAvatar(),
-        ],
+    return GestureDetector(
+      onTap: () {
+        controller.goToProfile(
+          contact: contact,
+          index: index,
+        );
+      },
+      child: Container(
+        width: Get.width,
+        height: Get.height * .07,
+        padding: paddingAll4,
+        child: Row(
+          children: [
+            (!contact.isRubyUser!) ? _buildInviteCard() : const SizedBox(),
+            _buildContactBody(),
+            SizedBox(
+              width: Get.width * .03,
+            ),
+            _buildAvatar(),
+          ],
+        ),
       ),
     );
   }
@@ -48,18 +56,23 @@ class BuildContactItemWidget extends StatelessWidget {
       width: Get.height * .06,
       height: Get.height * .06,
       decoration: BoxDecoration(
-        color: (contact.profilePicture is String) ? Colors.transparent : Colors.blue,
+        color: (contact.profilePicture is String)
+            ? Colors.transparent
+            : Colors.blue,
         shape: BoxShape.circle,
         boxShadow: ViewUtils.shadow(),
       ),
       child: (contact.profilePicture is String)
           ? ClipRRect(
               borderRadius: BorderRadius.circular(100.0),
-              child: Image(
-                image: NetworkImage(
-                  baseUrl + contact.profilePicture!,
+              child: Hero(
+                tag: 'contactImage-$index',
+                child: Image(
+                  image: NetworkImage(
+                    baseUrl + contact.profilePicture!,
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
               ),
             )
           : const Center(

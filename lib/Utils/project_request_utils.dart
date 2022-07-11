@@ -90,6 +90,18 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
     );
   }
 
+  Future<http.Response> getContactData({required int userId}) async {
+    return await makeHttpRequest(
+      webMethod: WebMethods.profile,
+      webController: WebControllers.user,
+      queryParams: '$userId',
+      type: 'get',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+    );
+  }
+
   Future<http.Response> getUserData() async {
     return await makeHttpRequest(
       webMethod: WebMethods.profile,

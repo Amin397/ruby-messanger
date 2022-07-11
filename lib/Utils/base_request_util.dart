@@ -15,6 +15,7 @@ class RequestsUtil {
     required WebMethods webMethod,
     required WebControllers webController,
     WebControllers? optionalWebMethod,
+    String? queryParams,
     Object body = const {},
     Map<String, String> headers = const {},
     required String type,
@@ -26,7 +27,8 @@ class RequestsUtil {
       webController: webController,
       webMethod: webMethod,
       optionalController: optionalWebMethod,
-    ).toString().replaceAll('_', '-'));
+      queryParams: queryParams
+    ).toString().replaceAll('-', '_'));
     print('body: \n');
     print(body);
     print('header: \n');
@@ -48,6 +50,7 @@ class RequestsUtil {
                     webMethod: webMethod,
                     webController: webController,
                     optionalController: optionalWebMethod,
+                    queryParams:queryParams,
                   ),
                   body: body,
                   headers: headers,
@@ -71,6 +74,7 @@ class RequestsUtil {
                     webMethod: webMethod,
                     webController: webController,
                     optionalController: optionalWebMethod,
+                    queryParams:queryParams,
                   ),
                   body: body,
                   headers: headers,
@@ -93,6 +97,7 @@ class RequestsUtil {
                     webMethod: webMethod,
                     webController: webController,
                     optionalController: optionalWebMethod,
+                    queryParams:queryParams,
                   ),
                   body: body,
                   headers: headers,
@@ -115,12 +120,12 @@ class RequestsUtil {
                     webMethod: webMethod,
                     webController: webController,
                     optionalController: optionalWebMethod,
+                    queryParams:queryParams,
                   ),
                   headers: headers,
                 )
                     .timeout(const Duration(seconds: 40), onTimeout: () {
-                  ViewUtils.showError(errorMessage: 'Something went wrong');
-                  return http.Response('Error', 600);
+                  return http.Response('Request time out', 600);
                 });
               } catch (e) {
                 print(e);
@@ -130,7 +135,7 @@ class RequestsUtil {
         }
       }
     } on SocketException catch (_) {
-      response = http.Response('connection field', 700);
+      response = http.Response('Connection field', 700);
       // isTimeOut(true);
     }
 
@@ -149,6 +154,7 @@ class RequestsUtil {
     WebControllers? optionalWebController,
     String headers = '',
     required String type,
+    String? queryParams,
     String? filePath,
   }) async {
     late http.MultipartRequest request;
@@ -179,6 +185,7 @@ class RequestsUtil {
               webMethod: webMethod,
               webController: webController,
               optionalController: optionalWebController,
+              queryParams:queryParams,
             ),
           );
           request.headers['Authorization'] = headers;
@@ -244,14 +251,26 @@ class RequestsUtil {
   static Uri makePath(
       {required WebControllers webController,
       required WebMethods webMethod,
+        String? queryParams,
       WebControllers? optionalController}) {
     if (optionalController != null) {
-      return Uri.parse(
-          '$baseUrl/${optionalController.name}/${webController.name}/${webMethod.name}/'
-              .replaceAll('_', '-'));
+      if(queryParams is String){
+        return Uri.parse(
+            '$baseUrl/${optionalController.name}/${webController.name}/${webMethod.name}/$queryParams/'
+                .replaceAll('_', '-'));
+      }else{
+        return Uri.parse(
+            '$baseUrl/${optionalController.name}/${webController.name}/${webMethod.name}/'
+                .replaceAll('_', '-'));
+      }
     } else {
-      return Uri.parse('$baseUrl/${webController.name}/${webMethod.name}/'
-          .replaceAll('_', '-'));
+      if(queryParams is String){
+        return Uri.parse('$baseUrl/${webController.name}/${webMethod.name}/$queryParams/'
+            .replaceAll('_', '-'));
+      }else{
+        return Uri.parse('$baseUrl/${webController.name}/${webMethod.name}/'
+            .replaceAll('_', '-'));
+      }
     }
   }
 }

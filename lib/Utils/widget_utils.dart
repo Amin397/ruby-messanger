@@ -107,7 +107,7 @@ class WidgetUtils{
         Get.back();
       },
       icon: const Icon(
-        Icons.arrow_forward_ios,
+        Icons.arrow_forward,
         color: Colors.white,
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:rubymessanger/Screens/CompleteProfile/View/complete_profile_screen.dart';
+import 'package:rubymessanger/Screens/ContactProfile/View/contact_profile_screen.dart';
 import 'package:rubymessanger/Screens/EditProfile/View/edit_profile_screen.dart';
 
 import '../Screens/ChatProfile/Screen/single_profile_screen.dart';
@@ -20,6 +21,7 @@ class NameRouts {
   static const String completeProfile = '/completeProfile';
   static const String editProfile = '/editProfile';
   static const String newChat = '/newChat';
+  static const String contactProfile = '/contactProfile';
 }
 
 class PageRout {
@@ -27,6 +29,12 @@ class PageRout {
     GetPage(
       name: NameRouts.splash,
       page: () => SplashScreen(),
+
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: NameRouts.contactProfile,
+      page: () => ContactProfileScreen(),
 
       transition: Transition.fade,
     ),
