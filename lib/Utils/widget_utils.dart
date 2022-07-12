@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
-
 
 typedef OnChangeStringInput = void Function(String);
 
-class WidgetUtils{
-
-
+class WidgetUtils {
   static Widget textFormField({
     TextEditingController? controller,
     String? label,
@@ -43,7 +42,7 @@ class WidgetUtils{
       height: height,
       child: Center(
         child: TextField(
-          onSubmitted: (text){
+          onSubmitted: (text) {
             func!(text);
           },
           textInputAction: inputAction,
@@ -90,18 +89,16 @@ class WidgetUtils{
               fontSize: 10.0,
             ),
             hintStyle: TextStyle(
-              color: hintTextColor,
-              fontSize: hintSize,
-              fontFamily: 'iranSanc'
-            ),
+                color: hintTextColor,
+                fontSize: hintSize,
+                fontFamily: 'iranSanc'),
           ),
         ),
       ),
     );
   }
 
-
-  static Widget backButton(){
+  static Widget backButton() {
     return IconButton(
       onPressed: () {
         Get.back();
@@ -113,4 +110,25 @@ class WidgetUtils{
     );
   }
 
+  static Widget emptyData({
+    String text = 'No Data',
+  }) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Lottie.asset(
+          'assets/anims/empty.json',
+          height: Get.width * .5,
+          width: Get.width * .5,
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            color: ColorUtils.textColor,
+            fontSize: 12.0,
+          ),
+        )
+      ],
+    );
+  }
 }

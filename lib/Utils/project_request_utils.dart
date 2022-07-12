@@ -132,6 +132,24 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
     );
   }
 
+  Future<http.Response> sendMessage({
+    required int pvId,
+    required String messageText,
+  }) async {
+    return await makeHttpRequest(
+      webMethod: WebMethods.message,
+      webController: WebControllers.pv,
+      type: 'post',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+      body: {
+        'text':messageText,
+        'pv_id':pvId.toString(),
+      }
+    );
+  }
+
   Future<http.Response> getUserData() async {
     return await makeHttpRequest(
       webMethod: WebMethods.profile,
