@@ -19,8 +19,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   RxBool isDark = false.obs;
   RxBool scrollTop = true.obs;
 
-  List<ChatModel> listOfChats = [
-    ChatModel(
+  List<RoomModel> listOfChats = [
+    RoomModel(
       fromMe: true,
       gender: true,
       delivered: true,
@@ -31,7 +31,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: true.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: false,
       delivered: true,
@@ -42,7 +42,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: true.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: false,
       delivered: true,
@@ -53,7 +53,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: true.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: true,
       delivered: true,
@@ -64,7 +64,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: true.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: true,
       delivered: true,
@@ -75,7 +75,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: true.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: true,
       delivered: true,
@@ -86,7 +86,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: true.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: true,
       delivered: true,
@@ -97,7 +97,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: true.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: true,
       delivered: true,
@@ -108,7 +108,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: true.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: true,
       delivered: true,
@@ -119,7 +119,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: true.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: false,
       gender: true,
       delivered: true,
@@ -130,7 +130,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: false.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: false,
       delivered: false,
@@ -141,7 +141,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: false.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: true,
       delivered: true,
@@ -152,7 +152,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: false.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: false,
       gender: true,
       delivered: true,
@@ -163,7 +163,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       seen: true,
       isSelected: false.obs,
     ),
-    ChatModel(
+    RoomModel(
       fromMe: true,
       gender: true,
       delivered: false,
@@ -245,12 +245,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     update(['theme']);
   }
 
-  void selectChat({required ChatModel item}) {
+  void selectChat({required RoomModel item}) {
     item.isSelected(true);
   }
 
   void tapOnChat({
-    required ChatModel item,
+    required RoomModel item,
     required int index,
   }) {
     if (listOfChats.any((element) => element.isSelected.isTrue)) {
@@ -258,7 +258,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     } else {
       Get.toNamed(NameRouts.singleChat, arguments: {
         'index': index,
-        'item': item,
+        'roomModel': item,
+        'fromHome':true
       });
     }
   }

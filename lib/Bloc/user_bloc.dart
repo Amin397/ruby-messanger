@@ -25,7 +25,7 @@ class UserBloc {
   }
 
   void setUserProfileImage({required String image}){
-    user!.profilePicture = baseUrl + image;
+    user!.profilePicture = image;
     streamController.sink.add(user);
   }
 

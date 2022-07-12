@@ -6,4 +6,5 @@ enum WebMethods{
   picture,
   profile,
   contact,
+  message,
 }

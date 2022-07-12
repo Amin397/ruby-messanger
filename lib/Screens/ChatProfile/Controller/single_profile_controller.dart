@@ -3,7 +3,7 @@ import 'package:rubymessanger/MainModel/chat_model.dart';
 
 
 class SingleProfileController extends GetxController{
-  late final ChatModel model;
+  late final RoomModel model;
 
   @override
   void onInit() {

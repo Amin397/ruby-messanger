@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class ChatModel {
+class RoomModel {
   String? image;
   late String title;
   String? lastMessage;
@@ -11,7 +11,7 @@ class ChatModel {
   RxInt unreadMessage;
   RxBool isSelected;
 
-  ChatModel({
+  RoomModel({
     this.image,
     this.gender,
     required this.title,

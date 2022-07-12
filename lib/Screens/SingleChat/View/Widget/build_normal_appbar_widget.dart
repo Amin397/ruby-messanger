@@ -14,7 +14,7 @@ class BuildNormalAppbarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         controller.goToSingleProfile();
       },
       child: SizedBox(
@@ -56,7 +56,9 @@ class BuildNormalAppbarWidget extends StatelessWidget {
         child: Align(
           alignment: Alignment.centerLeft,
           child: AutoSizeText(
-            controller.model.title,
+            (controller.fromHome)
+                ? controller.roomModel!.title
+                : '${controller.userModel!.firstName!} ${controller.userModel!.lastName!}',
             maxFontSize: 18.0,
             minFontSize: 12.0,
             maxLines: 1,
@@ -136,15 +138,12 @@ class BuildNormalAppbarWidget extends StatelessWidget {
   }
 
   Widget _buildChatAvatar() {
-    String name = '';
-    List<String> nameAvatar = [];
-    if (controller.model.title.contains(' ')) {
-      nameAvatar = controller.model.title.split(' ');
-    }
+    String avatar = '';
 
-    for (var o in nameAvatar) {
-      print(o.substring(0, 1));
-      name = name + o.substring(0, 1).toUpperCase();
+    if(controller.fromHome){
+      avatar = controller.roomModel!.image!;
+    }else{
+      avatar = controller.userModel!.profilePicture!;
     }
 
     return Container(
@@ -153,26 +152,21 @@ class BuildNormalAppbarWidget extends StatelessWidget {
       width: Get.width * .125,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100.0),
-        child: (controller.model.image!.length > 5)
+        child: (avatar.length > 5)
             ? Hero(
-                tag: 'chatProfile-${controller.index}',
+                tag: (controller.fromHome)?'chatProfile-${controller.index}':'contactImage-${controller.index}',
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100.0),
                   child: Image(
-                    image: AssetImage(controller.model.image!),
+                    image: NetworkImage(avatar),
                     fit: BoxFit.cover,
                   ),
                 ),
               )
-            : Center(
-                child: AutoSizeText(
-                  name,
-                  maxFontSize: 18.0,
-                  minFontSize: 10.0,
-                  maxLines: 1,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                  ),
+            : const Center(
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
                 ),
               ),
       ),

@@ -46,7 +46,7 @@ class BuildUserProfilePictureWidget extends StatelessWidget {
                               ),
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                baseUrl + Blocs.user.user!.profilePicture!,
+                                Blocs.user.user!.profilePicture!,
                               ),
                             )
                           : Image(

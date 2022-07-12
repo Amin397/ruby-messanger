@@ -37,17 +37,17 @@ class BuildSendMessageWidget extends StatelessWidget {
         child: Column(
           children: [
             _buildColumnPart(
-              text: 'Call',
+              text: 'Video Call',
               icon: Icon(
-                Icons.call_rounded,
+                Icons.videocam_rounded,
                 size: 20.0,
                 color: Colors.blue.shade700.withOpacity(.8),
               ),
             ),
             _buildColumnPart(
-              text: 'Copy number',
+              text: 'Voice Call',
               icon: Icon(
-                Icons.copy,
+                Icons.call_rounded,
                 size: 20.0,
                 color: Colors.blue.shade700.withOpacity(.8),
               ),
@@ -61,35 +61,40 @@ class BuildSendMessageWidget extends StatelessWidget {
   Widget _buildCallAndCopyNumberPart() {
     return Flexible(
       flex: 1,
-      child: Container(
-        margin: paddingAll10,
-        height: double.maxFinite,
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          color: ColorUtils.mainColor.withOpacity(.2),
-          borderRadius: radiusAll8,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const AutoSizeText(
-              'Send Message',
-              style: TextStyle(
-                fontSize: 16.0,
-                // color: ColorUtils.textColor,
+      child: GestureDetector(
+        onTap: (){
+          controller.goToMessageRoom();
+        },
+        child: Container(
+          margin: paddingAll10,
+          height: double.maxFinite,
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            color: ColorUtils.mainColor.withOpacity(.2),
+            borderRadius: radiusAll8,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const AutoSizeText(
+                'Send Message',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  // color: ColorUtils.textColor,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 6.0,
-            ),
-            Lottie.asset(
-              (Get.isDarkMode)
-                  ? 'assets/anims/sendMessageDark.json'
-                  : 'assets/anims/sendMessage.json',
-              height: 50.0,
-              width: 50.0,
-            )
-          ],
+              const SizedBox(
+                height: 6.0,
+              ),
+              Lottie.asset(
+                (Get.isDarkMode)
+                    ? 'assets/anims/sendMessageDark.json'
+                    : 'assets/anims/sendMessage.json',
+                height: 50.0,
+                width: 50.0,
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -69,7 +69,7 @@ class BuildContactItemWidget extends StatelessWidget {
                 tag: 'contactImage-$index',
                 child: Image(
                   image: NetworkImage(
-                    baseUrl + contact.profilePicture!,
+                    contact.profilePicture!,
                   ),
                   fit: BoxFit.cover,
                 ),

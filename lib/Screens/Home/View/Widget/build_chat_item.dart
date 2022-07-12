@@ -18,7 +18,7 @@ class BuildChatItem extends StatelessWidget {
   }) : super(key: key);
   final HomeController controller;
   final int index;
-  final ChatModel chat;
+  final RoomModel chat;
 
   @override
   Widget build(BuildContext context) {

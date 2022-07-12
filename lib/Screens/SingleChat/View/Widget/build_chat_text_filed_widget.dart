@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/SingleChat/Controller/single_chat_controller.dart';
@@ -77,20 +78,16 @@ class BuildChatTextFieldWidget extends StatelessWidget {
   }
 
   Widget _buildSendPart() {
-    return Container(
-      height: Get.height * .055,
-      width: Get.height * .055,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: ColorUtils.mainColor,
-        boxShadow: ViewUtils.shadow(
-          offset: const Offset(3.0, 3.0),
-        ),
-      ),
-      child: const Icon(
-        Icons.send,
-        size: 20.0,
-        color: Colors.white,
+    return GestureDetector(
+      onTap: (){
+        controller.sendMessage();
+      },
+      child: Lottie.asset(
+        'assets/anims/send.json',
+        height: Get.width * .15,
+        width: Get.width * .15,
+        controller:controller.animationController,
+        // repeat: false,
       ),
     );
   }

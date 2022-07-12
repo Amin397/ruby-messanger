@@ -57,12 +57,9 @@ class ContactProfileScreen extends StatelessWidget {
                         controller: controller,
                       ),
 
-
-
-
-
+                      
                       SizedBox(
-                        height: Get.height * .1,
+                        height: Get.height * .25,
                       ),
                     ],
                   ),
@@ -90,7 +87,7 @@ class ContactProfileScreen extends StatelessWidget {
         background: Hero(
           tag: 'contactImage-${controller.index}',
           child: Image.network(
-            baseUrl + controller.contact.profilePicture!,
+            controller.contact.profilePicture!,
             fit: BoxFit.cover,
           ),
         ),

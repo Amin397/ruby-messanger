@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -94,7 +93,38 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
     return await makeHttpRequest(
       webMethod: WebMethods.profile,
       webController: WebControllers.user,
-      queryParams: '$userId',
+      pathVariable: '$userId',
+      type: 'get',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+    );
+  }
+
+  Future<http.Response> createPv({required int userId}) async {
+    return await makeHttpRequest(
+      webController: WebControllers.pv,
+      pathVariable: '$userId',
+      type: 'post',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+    );
+  }
+
+  Future<http.Response> getMessages({
+    required int pvId,
+    required int limit,
+    required int offset,
+  }) async {
+    return await makeHttpRequest(
+      webMethod: WebMethods.message,
+      webController: WebControllers.pv,
+      queryParameters: {
+        'limit': limit.toString(),
+        'offset':offset.toString(),
+      },
+      pathVariable: '$pvId',
       type: 'get',
       headers: {
         'Authorization': 'Bearer ${Blocs.user.accessToken}',
@@ -135,7 +165,6 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
         'Authorization': 'Bearer ${Blocs.user.accessToken}',
       },
       body: mobileNumbers,
-
     );
   }
 

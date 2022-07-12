@@ -21,6 +21,7 @@ class BaseDioRequest {
         webMethod: webMethod,
         webController: webController,
         optionalController: optionalWebMethod,
+
       ).toString(),
       data: body,
       options: Options(
