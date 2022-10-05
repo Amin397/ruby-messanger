@@ -1,188 +1,41 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/MainModel/GetRouts.dart';
-import 'package:rubymessanger/MainModel/chat_model.dart';
 import 'package:rubymessanger/main.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+
+import '../../../Utils/project_request_utils.dart';
+import '../../../Utils/view_utils.dart';
+import '../Model/chat_room_model.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
   final GlobalKey scaffoldKey = GlobalKey<ScaffoldState>();
 
   late final WebSocketChannel? channel;
+  ProjectRequestUtils request = ProjectRequestUtils();
+
+  List<ChatRoomModel> chatRoomList = [];
 
   late AnimationController animatedIconController;
   late AnimationController animatedIconController1;
   RxBool isCollapsed = false.obs;
+  RxBool isLoaded = false.obs;
   RxBool isNewChat = false.obs;
 
   RxBool isDark = false.obs;
   RxBool scrollTop = true.obs;
 
-  List<RoomModel> listOfChats = [
-    RoomModel(
-      fromMe: true,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: true.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: false,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: true.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: false,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: true.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: true.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: true.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: true.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: true.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: true.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: true.obs,
-    ),
-    RoomModel(
-      fromMe: false,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: false.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: false,
-      delivered: false,
-      unreadMessage: 12.obs,
-      title: 'Amin Khademi',
-      image: '',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: false.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: false.obs,
-    ),
-    RoomModel(
-      fromMe: false,
-      gender: true,
-      delivered: true,
-      unreadMessage: 0.obs,
-      title: 'Amin Khademi',
-      image: '',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: false.obs,
-    ),
-    RoomModel(
-      fromMe: true,
-      gender: true,
-      delivered: false,
-      unreadMessage: 5.obs,
-      title: 'Amin Khademi',
-      image: 'assets/images/image.jpg',
-      lastMessage: 'goftam bia inja',
-      seen: true,
-      isSelected: false.obs,
-    ),
-  ];
-
   late ScrollController scrollController;
 
+  bool hasNext = false;
+
   @override
-  void onInit(){
-
-
-    getPermission();
+  void onInit() {
+    // getPermission();
+    getRooms();
     super.onInit();
 
     scrollController = ScrollController(initialScrollOffset: 0.0);
@@ -201,16 +54,58 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       reverseDuration: const Duration(milliseconds: 300),
     );
 
-
     channel = WebSocketChannel.connect(
       Uri.parse(
           'ws://${baseUrl.replaceAll('http://', '')}ws/?token=${Blocs.user.accessToken}'),
     );
   }
 
-  getPermission()async{
-    // await FlutterContacts.requestPermission();
+  getRooms() async {
+    request.getChatRooms().then((value) {
+      switch (value.statusCode) {
+        case 200:
+          {
+            hasNext = jsonDecode(value.body)['has_next'];
+            chatRoomList =
+                ChatRoomModel.listFromJson(jsonDecode(value.body)['result']);
+            isLoaded(true);
+            break;
+          }
+        case 600:
+          {
+            ViewUtils.showError(
+              errorMessage: value.body,
+            );
+            break;
+          }
+        case 406:
+          {
+            ViewUtils.showError(
+              errorMessage: jsonDecode(value.body)['detail'],
+            );
+            break;
+          }
+        case 700:
+          {
+            ViewUtils.showError(
+              errorMessage: value.body,
+            );
+            break;
+          }
+        default:
+          {
+            ViewUtils.showError(
+              errorMessage: 'Something went wrong',
+            );
+            break;
+          }
+      }
+    });
   }
+
+  // getPermission()async{
+  //   // await FlutterContacts.requestPermission();
+  // }
 
   void openMenu() async {
     if (isCollapsed.isTrue) {
@@ -245,21 +140,22 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     update(['theme']);
   }
 
-  void selectChat({required RoomModel item}) {
-    item.isSelected(true);
+  void selectChat({required ChatRoomModel item}) {
+    item.isSelected!(true);
   }
 
   void tapOnChat({
-    required RoomModel item,
+    required ChatRoomModel item,
     required int index,
   }) {
-    if (listOfChats.any((element) => element.isSelected.isTrue)) {
-      item.isSelected(!item.isSelected.value);
+    if (chatRoomList.any((element) => element.isSelected!.isTrue)) {
+      item.isSelected!(!item.isSelected!.value);
     } else {
       Get.toNamed(NameRouts.singleChat, arguments: {
         'index': index,
         'roomModel': item,
-        'fromHome':true
+        'fromHome': true,
+        'pvId': item.roomId,
       });
     }
   }

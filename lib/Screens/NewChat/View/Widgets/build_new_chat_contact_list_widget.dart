@@ -20,32 +20,35 @@ class BuildNewChatContactListWidget extends StatelessWidget {
         height: double.maxFinite,
         width: double.maxFinite,
         padding: paddingAll8,
-        child: Obx(() => (controller.isLoaded.isTrue)
-            ? AnimationLimiter(
-                child: ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) =>
-                      Divider(
-                    height: Get.height * .01,
-                    color: Colors.grey[200],
-                  ),
-                  controller: controller.scrollController,
-                  itemCount: controller.showContact.length,
-                  // physics: const BouncingScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) =>
-                      AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 500),
-                    child: ScaleAnimation(
-                      child: BuildContactItemWidget(
-                        controller: controller,
-                        contact: controller.showContact[index],
-                        index: index,
-                      ),
+        child: Obx(
+          () => (controller.isLoaded.isTrue)
+              ? AnimationLimiter(
+                  child: ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(
+                      height: Get.height * .01,
+                      color: Colors.grey[200],
                     ),
+                    controller: controller.scrollController,
+                    itemCount: controller.showContact.length,
+                    // physics: const BouncingScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 500),
+                        child: ScaleAnimation(
+                          child: BuildContactItemWidget(
+                            controller: controller,
+                            contact: controller.showContact[index],
+                            index: index,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                ),
-              )
-            : ViewUtils.loadingAnimation()),
+                )
+              : ViewUtils.loadingAnimation(),
+        ),
       ),
     );
   }

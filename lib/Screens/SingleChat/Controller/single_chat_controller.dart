@@ -2,24 +2,25 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/MainModel/GetRouts.dart';
+import 'package:rubymessanger/Screens/Home/Model/chat_room_model.dart';
 import 'package:rubymessanger/Utils/project_request_utils.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
-import 'package:rubymessanger/main.dart';
 
 import '../../../MainModel/chat_model.dart';
 import '../../../MainModel/user_model.dart';
 import '../Model/message_model.dart';
 
 class SingleChatController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+    with GetTickerProviderStateMixin {
   late final AnimationController animationController;
   ProjectRequestUtils request = ProjectRequestUtils();
 
   List<MessageModel> listOfMessages = [];
   late ScrollController scrollController;
 
-  RoomModel? roomModel;
+  ChatRoomModel? roomModel;
   UserModel? userModel;
   int index = 0;
   int pvId = 0;
@@ -74,11 +75,17 @@ class SingleChatController extends GetxController
 
             listOfMessages =
                 MessageModel.listFromJson(jsonDecode(value.body)['result']);
-            // scrollController.animateTo(
-            //   scrollController.offset + listOfMessages.length,
-            //   curve: Curves.linear,
-            //   duration: const Duration(milliseconds: 500),
-            // );
+            if(listOfMessages.isNotEmpty){
+              Future.delayed(const Duration(milliseconds: 200) , (){
+                scrollController.animateTo(
+                  scrollController.position.maxScrollExtent + 70,
+                  duration: const Duration(
+                    milliseconds: 600,
+                  ),
+                  curve: Curves.easeInOut,
+                );
+              });
+            }
             break;
           }
         case 600:
@@ -130,23 +137,45 @@ class SingleChatController extends GetxController
   }
 
   void sendMessage() async {
+    String text = messageTextController.text;
+    messageTextController.clear();
+    MessageModel message = MessageModel(
+      isMe: true,
+      isSend: false.obs,
+      text: text,
+      userId: Blocs.user.user!.id,
+      dateAdded: DateTime.now(),
+      isUnread: false,
+      pvId: pvId,
+    );
+
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent + 100,
+      duration: const Duration(
+        milliseconds: 600,
+      ),
+      curve: Curves.easeInOut,
+    );
+
     animationController
       ..duration = const Duration(milliseconds: 1800)
       ..forward();
     Future.delayed(const Duration(milliseconds: 1800), () {
       animationController.reset();
     });
+    listOfMessages.add(message);
 
-    print('==============');
+    update(['chatList']);
     request
         .sendMessage(
       pvId: pvId,
-      messageText: messageTextController.text,
+      messageText: text,
     )
         .then((value) {
       switch (value.statusCode) {
         case 201:
           {
+            message.isSend(true);
             break;
           }
         case 600:
@@ -181,15 +210,27 @@ class SingleChatController extends GetxController
     });
   }
 
-
   void unFocus() {
     Focus.of(Get.context!).requestFocus(FocusNode());
   }
-
 
   @override
   void dispose() {
     scrollController.dispose();
     super.dispose();
+  }
+
+  void show(MessageModel message) {
+    print(DateTime.now());
+  }
+
+  void scrollToDown() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent + 70,
+      duration: const Duration(
+        milliseconds: 600,
+      ),
+      curve: Curves.easeInOut,
+    );
   }
 }

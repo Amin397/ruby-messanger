@@ -4,6 +4,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/MainModel/GetRouts.dart';
 import 'package:rubymessanger/Screens/NewChat/View/Widgets/add_new_contact_modal_bottom_sheet.dart';
 import 'package:rubymessanger/Utils/project_request_utils.dart';
@@ -75,14 +76,19 @@ class NewChatController extends GetxController {
       contacts.add(newContact);
       update(['getContacts']);
       ViewUtils.showSuccess(successMessage: 'Contact Saved!');
+      addContactFirstNameTextController.clear();
+      addContactLastNameTextController.clear();
+      addContactPhoneNumberTextController.clear();
     }
   }
 
   void getContacts() async {
     if (await Permission.contacts.status.isGranted) {
       contacts = await ContactsService.getContacts();
+      // contacts.removeWhere((element) => element.phones!.first.value == Blocs.user.user!.phoneNumber);
 
       for (var o in contacts) {
+        if(o.phones!.isNotEmpty){
         showContact.add(
           ContactModel(
             phoneNumber: o.phones!.first.value!,
@@ -90,7 +96,9 @@ class NewChatController extends GetxController {
             name: o.displayName,
           ),
         );
+        }
       }
+
 
       sendContacts();
 
@@ -110,10 +118,19 @@ class NewChatController extends GetxController {
 
   void sendContacts() async {
     listOfContact.clear();
-    contacts
-        .map((e) => listOfContact
-            .add({'phone_number': e.phones!.first.value}))
-        .toList();
+    List<ContactModel> tempList = [];
+
+    contacts.forEach((element) {
+      if(element.phones!.isNotEmpty){
+        listOfContact
+            .add({'phone_number': element.phones!.first.value!.replaceAll(' ', '').replaceAll('+98', '0')});
+      }
+    });
+      print(listOfContact);
+    // contacts
+    //     .map((e) => listOfContact
+    //         .add({'phone_number': e.phones!.first.value}))
+    //     .toList();
 
     // print(listOfContact.first.runtimeType);
 
@@ -126,7 +143,15 @@ class NewChatController extends GetxController {
         case 200:
           {
             print(value.data);
-            showContact = ContactModel.listFromJson(value.data);
+
+            tempList = ContactModel.listFromJson(value.data);
+            for (var o in tempList) {
+              if(o.isRubyUser!){
+                showContact.insert(0, o);
+              }else{
+                showContact.add(o);
+              }
+            }
             createContactItem();
 
             break;

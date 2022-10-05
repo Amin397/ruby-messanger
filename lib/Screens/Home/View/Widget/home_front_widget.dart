@@ -5,6 +5,7 @@ import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
 
+import '../../../../Utils/widget_utils.dart';
 import 'build_chat_item.dart';
 
 class HomeFrontWidget extends StatelessWidget {
@@ -16,10 +17,10 @@ class HomeFrontWidget extends StatelessWidget {
     return Obx(
       () => WillPopScope(
         onWillPop: () async {
-          if (controller.listOfChats
-              .any((element) => element.isSelected.isTrue)) {
-            for (var element in controller.listOfChats) {
-              element.isSelected(false);
+          if (controller.chatRoomList
+              .any((element) => element.isSelected!.isTrue)) {
+            for (var element in controller.chatRoomList) {
+              element.isSelected!(false);
             }
           } else if (controller.isCollapsed.isTrue) {
             controller.openMenu();
@@ -47,32 +48,42 @@ class HomeFrontWidget extends StatelessWidget {
                 top: Radius.circular(12.0),
               ),
             ),
-            child: AnimationLimiter(
-              child: NotificationListener(
-                child: ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) => Divider(
-                    color: Colors.grey[200],
-                  ),
-                  controller: controller.scrollController,
-                  itemCount: controller.listOfChats.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      AnimationConfiguration.staggeredList(
-                        position: index,
-                        duration: const Duration(milliseconds: 500),
-                        child: ScaleAnimation(
-                          child: BuildChatItem(
-                            controller: controller,
-                            chat: controller.listOfChats[index],
-                            index: index,
+            child: Obx(
+              () => (controller.isLoaded.isTrue)
+                  ? (controller.chatRoomList.isNotEmpty)
+                      ? AnimationLimiter(
+                          child: NotificationListener(
+                            child: ListView.separated(
+                              separatorBuilder:
+                                  (BuildContext context, int index) => Divider(
+                                color: Colors.grey[200],
+                              ),
+                              controller: controller.scrollController,
+                              itemCount: controller.chatRoomList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 500),
+                                  child: ScaleAnimation(
+                                    child: BuildChatItem(
+                                      controller: controller,
+                                      chat: controller.chatRoomList[index],
+                                      index: index,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            onNotification: (ScrollUpdateNotification t) {
+                              controller.scrollList(t);
+                              return true;
+                            },
                           ),
-                        ),
-                      ),
-                ),
-                onNotification: (ScrollUpdateNotification t) {
-                  controller.scrollList(t);
-                 return true;
-                },
-              ),
+                        )
+                      : WidgetUtils.emptyData(
+                          text: 'no conversation',
+                        )
+                  : ViewUtils.loadingAnimation(),
             ),
           ),
         ),

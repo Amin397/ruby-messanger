@@ -42,7 +42,7 @@ class BuildChatTextFieldWidget extends StatelessWidget {
         ),
         width: double.maxFinite,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color:(Get.isDarkMode)?ColorUtils.mainDarkColor: Colors.white,
           boxShadow: ViewUtils.shadow(
             offset: const Offset(0.0, 0.0),
           ),
@@ -53,6 +53,11 @@ class BuildChatTextFieldWidget extends StatelessWidget {
           controller: controller.messageTextController,
           maxLines: 10,
           minLines: 1,
+          onTap: (){
+            if(controller.listOfMessages.isNotEmpty){
+              controller.scrollToDown();
+            }
+          },
           keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -71,7 +76,12 @@ class BuildChatTextFieldWidget extends StatelessWidget {
                 width: 0.5,
               ),
             ),
+            hintText: 'Write message...',
+            hintStyle: const TextStyle(
+              fontSize: 14.0,
+            )
           ),
+
         ),
       ),
     );
@@ -80,7 +90,9 @@ class BuildChatTextFieldWidget extends StatelessWidget {
   Widget _buildSendPart() {
     return GestureDetector(
       onTap: (){
-        controller.sendMessage();
+        if(controller.messageTextController.text.isNotEmpty){
+          controller.sendMessage();
+        }
       },
       child: Lottie.asset(
         'assets/anims/send.json',

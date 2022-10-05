@@ -1,13 +1,9 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rubymessanger/Const/ColorUtils.dart';
-import 'package:rubymessanger/Const/Consts.dart';
-import 'package:rubymessanger/MainModel/chat_model.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
-import 'package:rubymessanger/Utils/view_utils.dart';
+import 'package:rubymessanger/Screens/Home/Model/chat_room_model.dart';
 
 class BuildChatItem extends StatelessWidget {
   const BuildChatItem({
@@ -18,7 +14,7 @@ class BuildChatItem extends StatelessWidget {
   }) : super(key: key);
   final HomeController controller;
   final int index;
-  final RoomModel chat;
+  final ChatRoomModel chat;
 
   @override
   Widget build(BuildContext context) {
@@ -64,32 +60,36 @@ class BuildChatItem extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: (chat.isSelected.isTrue)
+                color: (chat.isSelected!.isTrue)
                     ? ColorUtils.mainColor
                     : Colors.grey,
-                width: (chat.isSelected.isTrue) ? 2.5 : 1.0,
+                width: (chat.isSelected!.isTrue) ? 2.5 : 1.0,
               ),
             ),
             child: Hero(
               tag: 'chatProfile-$index',
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50.0),
-                child: Image(
-                  image: (chat.image!.length > 5)
-                      ? AssetImage(chat.image!)
-                      : AssetImage(
-                          (chat.gender!)
-                              ? 'assets/images/male_image.png'
-                              : 'assets/images/female_image.png',
+                child: (chat.avatar is String)
+                    ? Image(
+                        image: NetworkImage(
+                          chat.avatar!,
                         ),
-                  fit: BoxFit.cover,
-                ),
+                        fit: BoxFit.cover,
+                      )
+                    : const Image(
+                        image: AssetImage(
+                            // (chat.gender!)
+                            'assets/images/male_image.png'
+                            // : 'assets/images/female_image.png',
+                            ),
+                      ),
               ),
             ),
           ),
         ),
         Obx(
-          () => (chat.isSelected.isTrue)
+          () => (chat.isSelected!.isTrue)
               ? Align(
                   alignment: Alignment.bottomRight,
                   child: AnimatedContainer(
@@ -134,44 +134,44 @@ class BuildChatItem extends StatelessWidget {
                       child: SizedBox(
                         height: double.maxFinite,
                         width: double.maxFinite,
-                        child: (chat.fromMe)
-                            ? (chat.delivered!)
-                                ? Stack(
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      Icon(
-                                        Icons.check,
-                                        color: Colors.red.shade800,
-                                        size: 16.0,
-                                      ),
-                                      Positioned(
-                                        right: 5.0,
-                                        child: Icon(
-                                          Icons.check,
-                                          color: Colors.red.shade800,
-                                          size: 16.0,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : const Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Icon(
-                                      Icons.check,
-                                      size: 16.0,
-                                      color: Colors.grey,
-                                    ),
-                                  )
-                            : const AutoSizeText(
-                                'Wed',
-                                maxFontSize: 16.0,
-                                minFontSize: 10.0,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  color: ColorUtils.textColor,
-                                  fontSize: 12.0,
-                                ),
-                              ),
+                        // child: (chat.isLastFromMe!)
+                        //     ? (chat!.delivered!)
+                        //         ? Stack(
+                        //             clipBehavior: Clip.none,
+                        //             children: [
+                        //               Icon(
+                        //                 Icons.check,
+                        //                 color: Colors.red.shade800,
+                        //                 size: 16.0,
+                        //               ),
+                        //               Positioned(
+                        //                 right: 5.0,
+                        //                 child: Icon(
+                        //                   Icons.check,
+                        //                   color: Colors.red.shade800,
+                        //                   size: 16.0,
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           )
+                        //         : const Align(
+                        //             alignment: Alignment.centerRight,
+                        //             child: Icon(
+                        //               Icons.check,
+                        //               size: 16.0,
+                        //               color: Colors.grey,
+                        //             ),
+                        //           )
+                        //     : const AutoSizeText(
+                        //         'Wed',
+                        //         maxFontSize: 16.0,
+                        //         minFontSize: 10.0,
+                        //         maxLines: 1,
+                        //         style: TextStyle(
+                        //           color: ColorUtils.textColor,
+                        //           fontSize: 12.0,
+                        //         ),
+                        //       ),
                       ),
                     ),
                     Flexible(
@@ -179,33 +179,33 @@ class BuildChatItem extends StatelessWidget {
                       child: SizedBox(
                         height: double.maxFinite,
                         width: double.maxFinite,
-                        child: (chat.unreadMessage > 0)
-                            ? Container(
-                                margin: paddingAll4,
-                                decoration: BoxDecoration(
-                                  color: Colors.red.shade800,
-                                  borderRadius: radiusAll8,
-                                  boxShadow: ViewUtils.shadow(
-                                    offset: const Offset(
-                                      0.0,
-                                      -2.0,
-                                    ),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: AutoSizeText(
-                                    chat.unreadMessage.toString(),
-                                    maxLines: 1,
-                                    maxFontSize: 14.0,
-                                    minFontSize: 10.0,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.0,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : const SizedBox(),
+                        // child: (chat.unreadMessage > 0)
+                        //     ? Container(
+                        //         margin: paddingAll4,
+                        //         decoration: BoxDecoration(
+                        //           color: Colors.red.shade800,
+                        //           borderRadius: radiusAll8,
+                        //           boxShadow: ViewUtils.shadow(
+                        //             offset: const Offset(
+                        //               0.0,
+                        //               -2.0,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         child: Center(
+                        //           child: AutoSizeText(
+                        //             chat.unreadMessage.toString(),
+                        //             maxLines: 1,
+                        //             maxFontSize: 14.0,
+                        //             minFontSize: 10.0,
+                        //             style: const TextStyle(
+                        //               color: Colors.white,
+                        //               fontSize: 12.0,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       )
+                        //     : const SizedBox(),
                       ),
                     ),
                   ],
@@ -227,7 +227,7 @@ class BuildChatItem extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
-                            chat.title,
+                            chat.name!,
                             maxLines: 1,
                             maxFontSize: 18.0,
                             minFontSize: 12.0,

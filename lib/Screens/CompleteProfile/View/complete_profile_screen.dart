@@ -86,6 +86,7 @@ class CompleteProfileScreen extends StatelessWidget {
           height: double.maxFinite,
           width: double.maxFinite,
           child: PageView(
+            physics: const NeverScrollableScrollPhysics(),
             controller: controller.pageController,
             children: [
               BuildCompleteRegisterImageWidget(

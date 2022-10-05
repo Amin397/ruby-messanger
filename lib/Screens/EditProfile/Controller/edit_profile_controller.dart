@@ -6,7 +6,6 @@ import '../View/Widgets/edit_profile_picture_modal.dart';
 
 class EditProfileController extends GetxController {
   void editPicture() async {
-
     showModalBottomSheet(
       context: Get.context!,
       backgroundColor: Colors.transparent,

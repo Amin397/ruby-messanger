@@ -143,6 +143,7 @@ class CompleteRegisterModal extends StatelessWidget {
               () => AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
                 transitionBuilder: (widget, animation) => FadeTransition(
+
                   opacity: animation,
                   child: widget,
                 ),

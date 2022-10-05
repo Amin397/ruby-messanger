@@ -65,7 +65,7 @@ class CompleteProfileController extends GetxController {
           sourcePath: image!.path,
           compressFormat: ImageCompressFormat.png,
           compressQuality: 100,
-          aspectRatio: CropAspectRatio(ratioX: 1 , ratioY: 1),
+          aspectRatio: const CropAspectRatio(ratioX: 1 , ratioY: 1),
           cropStyle: CropStyle.circle,
         );
         if (croppedFile != null) {

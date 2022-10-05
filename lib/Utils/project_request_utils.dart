@@ -122,7 +122,7 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
       webController: WebControllers.pv,
       queryParameters: {
         'limit': limit.toString(),
-        'offset':offset.toString(),
+        'offset': offset.toString(),
       },
       pathVariable: '$pvId',
       type: 'get',
@@ -137,17 +137,16 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
     required String messageText,
   }) async {
     return await makeHttpRequest(
-      webMethod: WebMethods.message,
-      webController: WebControllers.pv,
-      type: 'post',
-      headers: {
-        'Authorization': 'Bearer ${Blocs.user.accessToken}',
-      },
-      body: {
-        'text':messageText,
-        'pv_id':pvId.toString(),
-      }
-    );
+        webMethod: WebMethods.message,
+        webController: WebControllers.pv,
+        type: 'post',
+        headers: {
+          'Authorization': 'Bearer ${Blocs.user.accessToken}',
+        },
+        body: {
+          'text': messageText,
+          'pv_id': pvId.toString(),
+        });
   }
 
   Future<http.Response> getUserData() async {
@@ -174,7 +173,19 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
         });
   }
 
+  Future<http.Response> getChatRooms() async {
+    return await makeHttpRequest(
+      webMethod: WebMethods.room,
+      webController: WebControllers.user,
+      type: 'get',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+    );
+  }
+
   Future<Response> sendContacts({required List mobileNumbers}) async {
+    print(mobileNumbers);
     return await makeDioRequest(
       webMethod: WebMethods.contact,
       webController: WebControllers.user,
@@ -182,20 +193,21 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
       headers: {
         'Authorization': 'Bearer ${Blocs.user.accessToken}',
       },
-      body: mobileNumbers,
+      body: jsonEncode(mobileNumbers),
     );
   }
 
   Future<http.Response> checkOtpCode({required String code}) async {
     return await makeHttpRequest(
-        webMethod: WebMethods.submit_otp,
-        webController: WebControllers.user,
-        type: 'post',
-        headers: {
-          'Authorization': 'Bearer ${Blocs.user.accessToken}',
-        },
-        body: {
-          'otp': code,
-        });
+      webMethod: WebMethods.submit_otp,
+      webController: WebControllers.user,
+      type: 'post',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+      body: {
+        'otp': code,
+      },
+    );
   }
 }

@@ -59,6 +59,22 @@ class ViewUtils {
     );
   }
 
+  // String generateTime(DateTime time){
+  //
+  //
+  //   int hour = 0;
+  //   int minute = 0;
+  //
+  //
+  //   time.hour
+  //
+  //
+  //   return'';
+  // }
+
+
+  //
+
   static void onChange(
       {String? string,
       TextEditingController? textEditingController,

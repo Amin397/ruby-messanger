@@ -26,26 +26,61 @@ class SingleChatScreen extends StatelessWidget {
               SingleChatAppBarWidget(
                 controller: controller,
               ),
-              BuildChatBodyWidget(
-                controller: controller,
-              ),
-              SizedBox(
-                height: Get.height * .01,
-              ),
-              Obx(
-                () => AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  transitionBuilder: (widget, animation) => FadeTransition(
-                    opacity: animation,
-                    child: widget,
-                  ),
-                  child: (controller.isSearchClicked.isTrue)
-                      ? BuildSearchResultWidget(
-                          controller: controller,
-                        )
-                      : BuildChatTextFieldWidget(
-                          controller: controller,
+              Expanded(
+                child: SizedBox(
+                  height: double.maxFinite,
+                  width: double.maxFinite,
+                  child: Stack(
+                    children: [
+                      const SizedBox(
+                        height: double.maxFinite,
+                        width: double.maxFinite,
+                        child: Image(
+                          image: AssetImage(
+                            'assets/images/chatPattern.jpg',
+                          ),
+                          repeat: ImageRepeat.repeat,
                         ),
+                      ),
+                      Container(
+                        height: double.maxFinite,
+                        width: double.maxFinite,
+                        color:(Get.isDarkMode)?Colors.black.withOpacity(.5): Colors.white.withOpacity(.5),
+                      ),
+                      SizedBox(
+                        height: double.maxFinite,
+                        width: double.maxFinite,
+                        child: Column(
+                          children: [
+                            BuildChatBodyWidget(
+                              controller: controller,
+                            ),
+                            SizedBox(
+                              height: Get.height * .01,
+                            ),
+                            Obx(
+                              () => AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 200),
+                                transitionBuilder: (widget, animation) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: widget,
+                                  );
+                                },
+                                child: (controller.isSearchClicked.isTrue)
+                                    ? BuildSearchResultWidget(
+                                        controller: controller,
+                                      )
+                                    : BuildChatTextFieldWidget(
+                                        controller: controller,
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

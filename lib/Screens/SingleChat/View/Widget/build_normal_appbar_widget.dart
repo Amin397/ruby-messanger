@@ -57,7 +57,7 @@ class BuildNormalAppbarWidget extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: AutoSizeText(
             (controller.fromHome)
-                ? controller.roomModel!.title
+                ? controller.roomModel!.name!
                 : '${controller.userModel!.firstName!} ${controller.userModel!.lastName!}',
             maxFontSize: 18.0,
             minFontSize: 12.0,
@@ -141,7 +141,7 @@ class BuildNormalAppbarWidget extends StatelessWidget {
     String avatar = '';
 
     if(controller.fromHome){
-      avatar = controller.roomModel!.image!;
+      avatar = controller.roomModel!.avatar!;
     }else{
       avatar = controller.userModel!.profilePicture!;
     }
