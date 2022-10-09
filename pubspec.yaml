@@ -95,6 +95,18 @@ flutter:
     - family: ruby
       fonts:
         - asset: assets/fonts/ruby.ttf
+    - family: romelio
+      fonts:
+        - asset: assets/fonts/Romelio.ttf
+    - family: kimberley
+      fonts:
+        - asset: assets/fonts/kimberley bl.otf
+    - family: HeavyMont
+      fonts:
+        - asset: assets/fonts/HeavyMont.otf
+    - family: mont
+      fonts:
+        - asset: assets/fonts/mont.otf
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

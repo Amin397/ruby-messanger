@@ -5,6 +5,7 @@ import 'package:rubymessanger/Screens/EditProfile/Controller/edit_profile_contro
 import 'package:rubymessanger/Screens/EditProfile/View/Widgets/build_user_profile_picture_widget.dart';
 
 import 'Widgets/build_edit_profile_app_bar_widget.dart';
+import 'Widgets/build_user_profile_info_widget.dart';
 
 
 class EditProfileScreen extends StatelessWidget {
@@ -24,9 +25,9 @@ class EditProfileScreen extends StatelessWidget {
               BuildEditProfileAppBarWidget(
                 controller: controller,
               ),
-              BuildUserProfilePictureWidget(
+              BuildUserProfileInfoWidget(
                 controller: controller,
-              ),
+              )
             ],
           ),
         ),

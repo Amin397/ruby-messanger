@@ -89,9 +89,10 @@ class WidgetUtils {
               fontSize: 10.0,
             ),
             hintStyle: TextStyle(
-                color: hintTextColor,
-                fontSize: hintSize,
-                fontFamily: 'iranSanc'),
+              color: hintTextColor,
+              fontSize: hintSize,
+              fontFamily: 'iranSanc',
+            ),
           ),
         ),
       ),
@@ -104,7 +105,7 @@ class WidgetUtils {
         Get.back();
       },
       icon: const Icon(
-        Icons.arrow_forward,
+        Icons.arrow_forward_ios,
         color: Colors.white,
       ),
     );
