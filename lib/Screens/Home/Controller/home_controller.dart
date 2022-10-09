@@ -5,16 +5,20 @@ import 'package:get/get.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/MainModel/GetRouts.dart';
 import 'package:rubymessanger/main.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/io.dart';
 
+import '../../../MainModel/socket_message_model.dart';
+import '../../../Utils/StorageUtils.dart';
 import '../../../Utils/project_request_utils.dart';
 import '../../../Utils/view_utils.dart';
 import '../Model/chat_room_model.dart';
+import '../View/Widget/exit_alert.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
   final GlobalKey scaffoldKey = GlobalKey<ScaffoldState>();
 
-  late final WebSocketChannel? channel;
+  late final IOWebSocketChannel channel;
+  late SocketMessageModel socketModel;
   ProjectRequestUtils request = ProjectRequestUtils();
 
   List<ChatRoomModel> chatRoomList = [];
@@ -54,10 +58,59 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       reverseDuration: const Duration(milliseconds: 300),
     );
 
-    channel = WebSocketChannel.connect(
-      Uri.parse(
-          'ws://${baseUrl.replaceAll('http://', '')}ws/?token=${Blocs.user.accessToken}'),
-    );
+    connectToSocket();
+    // channel = WebSocketChannel.connect(
+    //   Uri.parse(
+    //       'ws://${baseUrl.replaceAll('http://', '')}ws/?token=${Blocs.user.accessToken}'),
+    // );
+  }
+
+  connectToSocket() async {
+    try {
+      channel = IOWebSocketChannel.connect(
+          'ws://${baseUrl.replaceAll('http://', '')}/ws/?token=${Blocs.user.accessToken}');
+
+      channel.stream.listen((event) {
+        print(event);
+        socketModel = SocketMessageModel.fromJson(jsonDecode(event));
+        if (!chatRoomList
+            .any((element) => element.roomId == socketModel.roomId)) {
+          chatRoomList.insert(
+              0,
+              ChatRoomModel(
+                isSelected: false.obs,
+                id: socketModel.pvId,
+                name: socketModel.name,
+                avatar: socketModel.avatar,
+                isLastFromMe: false,
+                lastMessage: socketModel.text,
+                isPv: true,
+                roomId: socketModel.roomId,
+                isPinned: false,
+                isMuted: false,
+                newMessage: 1.obs,
+              ));
+          isLoaded(false);
+          Future.delayed(Duration.zero, () {
+            isLoaded(true);
+          });
+        } else {
+          chatRoomList
+              .singleWhere((element) => element.roomId == socketModel.roomId)
+              .lastMessage = socketModel.text;
+          chatRoomList
+              .singleWhere((element) => element.roomId == socketModel.roomId)
+              .newMessage!
+              .value++;
+          isLoaded(false);
+          Future.delayed(Duration.zero, () {
+            isLoaded(true);
+          });
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   getRooms() async {
@@ -147,10 +200,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void tapOnChat({
     required ChatRoomModel item,
     required int index,
-  }) {
+  }) async {
     if (chatRoomList.any((element) => element.isSelected!.isTrue)) {
       item.isSelected!(!item.isSelected!.value);
     } else {
+      channel.sink.close();
+      item.newMessage!(0);
       Get.toNamed(NameRouts.singleChat, arguments: {
         'index': index,
         'roomModel': item,
@@ -161,10 +216,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   @override
-  void dispose() {
-    channel!.sink.close();
-    super.dispose();
+  void onClose() {
+    channel.sink.close();
+    super.onClose();
   }
+
+
 
   void scrollList(ScrollUpdateNotification t) {
     if (t.scrollDelta! < 0) {
@@ -173,5 +230,33 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       scrollTop(false);
     }
     // print(t.scrollDelta);
+  }
+
+  void showExitAlert() async {
+    bool exit = await showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) => AlertDialog(
+        contentPadding: EdgeInsets.zero,
+        backgroundColor: Colors.transparent,
+        content: ExitAlert(
+          controller: this,
+        ),
+      ),
+    );
+
+    if (exit) {
+      StorageUtils.setUserAccessToken(accessToken: null);
+      StorageUtils.setUserRefreshToken(refreshToken: null);
+
+      Get.offAndToNamed(
+        NameRouts.splash,
+      );
+      Future.delayed(
+        const Duration(milliseconds: 500),
+        () {
+          Get.delete<HomeController>();
+        },
+      );
+    }
   }
 }

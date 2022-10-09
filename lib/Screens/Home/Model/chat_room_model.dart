@@ -12,10 +12,12 @@ class ChatRoomModel {
     this.name,
     this.isLastFromMe,
     this.avatar,
+    this.newMessage,
     required this.isSelected,
   });
 
   int? id;
+  RxInt? newMessage;
   bool? isPv;
   int? roomId;
   String? lastMessage;
@@ -41,6 +43,7 @@ class ChatRoomModel {
       timestamp: DateTime.parse(json["timestamp"]),
       isPinned: json["is_pinned"],
       isMuted: json["is_muted"],
+      newMessage: 0.obs,
       isSelected: false.obs);
 
   Map<String, dynamic> toJson() => {

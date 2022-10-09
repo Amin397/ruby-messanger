@@ -28,7 +28,7 @@ class BuildMessageItemWidget extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              controller.show(message);
+              // controller.show(message);
             },
             onLongPress: () {
               // controller.unFocus();

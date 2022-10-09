@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/MainModel/GetRouts.dart';
+import 'package:rubymessanger/MainModel/socket_message_model.dart';
 import 'package:rubymessanger/Screens/Home/Model/chat_room_model.dart';
 import 'package:rubymessanger/Utils/project_request_utils.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
+import 'package:web_socket_channel/io.dart';
 
-import '../../../MainModel/chat_model.dart';
 import '../../../MainModel/user_model.dart';
+import '../../../main.dart';
 import '../Model/message_model.dart';
 
 class SingleChatController extends GetxController
@@ -36,6 +38,9 @@ class SingleChatController extends GetxController
   int limitMessage = 15;
   int offsetMessage = 0;
 
+  late final IOWebSocketChannel channel;
+  late SocketMessageModel socketModel;
+
   @override
   void onInit() {
     animationController = AnimationController(
@@ -53,9 +58,56 @@ class SingleChatController extends GetxController
       userModel = Get.arguments['userModel'];
     }
 
+    connectToSocket();
     getMessages();
 
     super.onInit();
+  }
+
+//  09163005882
+//
+//  کبودوند
+
+  connectToSocket() async {
+    try {
+      channel = IOWebSocketChannel.connect(
+          'ws://${baseUrl.replaceAll('http://', '')}/ws/?token=${Blocs.user.accessToken}');
+
+      channel.stream.listen((event) {
+        socketModel = SocketMessageModel.fromJson(jsonDecode(event));
+        if (Blocs.user.user!.id != socketModel.userId) {
+          if (!listOfMessages.any((element) => element.id == socketModel.id)) {
+            listOfMessages.add(
+              MessageModel(
+                isMe: false,
+                id: socketModel.id,
+                isSend: true.obs,
+                text: socketModel.text,
+                pvId: socketModel.pvId,
+                userId: socketModel.userId,
+                dateAdded: socketModel.dateAdded,
+                dateUpdated: socketModel.dateUpdated,
+                isUnread: socketModel.isUnread,
+                image: socketModel.image,
+                replyId: socketModel.replyId,
+              ),
+            );
+            update(['chatList']);
+            Future.delayed(const Duration(milliseconds: 200), () {
+              scrollController.animateTo(
+                scrollController.position.maxScrollExtent + 70,
+                duration: const Duration(
+                  milliseconds: 300,
+                ),
+                curve: Curves.easeInOut,
+              );
+            });
+          }
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   getMessages() async {
@@ -72,11 +124,10 @@ class SingleChatController extends GetxController
         case 200:
           {
             hasNext = mapResult['has_next'];
-
             listOfMessages =
                 MessageModel.listFromJson(jsonDecode(value.body)['result']);
-            if(listOfMessages.isNotEmpty){
-              Future.delayed(const Duration(milliseconds: 200) , (){
+            if (listOfMessages.isNotEmpty) {
+              Future.delayed(const Duration(milliseconds: 200), () {
                 scrollController.animateTo(
                   scrollController.position.maxScrollExtent + 70,
                   duration: const Duration(
@@ -131,9 +182,22 @@ class SingleChatController extends GetxController
   }
 
   void goToSingleProfile() {
-    Get.toNamed(NameRouts.singleProfile, arguments: {
-      'profile': roomModel,
-    });
+    // Get.toNamed(NameRouts.singleProfile, arguments: {
+    //   'profile': roomModel,
+    // });
+
+    // print(userModel);
+
+    if (fromHome) {
+      // Get.toNamed(NameRouts.contactProfile, arguments: {
+      //   'userId': roomModel.,
+      //   'profilePicture': userModel!.profilePicture,
+      //   'userName': '${userModel!.firstName} ${userModel!.lastName}',
+      //   'index': index
+      // });
+    } else {
+      Get.back();
+    }
   }
 
   void sendMessage() async {
@@ -149,13 +213,15 @@ class SingleChatController extends GetxController
       pvId: pvId,
     );
 
-    scrollController.animateTo(
-      scrollController.position.maxScrollExtent + 100,
-      duration: const Duration(
-        milliseconds: 600,
-      ),
-      curve: Curves.easeInOut,
-    );
+    if (listOfMessages.isNotEmpty) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent + 100,
+        duration: const Duration(
+          milliseconds: 600,
+        ),
+        curve: Curves.easeInOut,
+      );
+    }
 
     animationController
       ..duration = const Duration(milliseconds: 1800)
@@ -164,7 +230,7 @@ class SingleChatController extends GetxController
       animationController.reset();
     });
     listOfMessages.add(message);
-
+    update(['chatList']);
     update(['chatList']);
     request
         .sendMessage(
@@ -220,8 +286,11 @@ class SingleChatController extends GetxController
     super.dispose();
   }
 
-  void show(MessageModel message) {
-    print(DateTime.now());
+  @override
+  void onClose() {
+    channel.sink.close();
+    print('socket closed');
+    super.onClose();
   }
 
   void scrollToDown() {

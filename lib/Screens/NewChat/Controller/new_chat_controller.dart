@@ -179,7 +179,9 @@ class NewChatController extends GetxController {
 
   void goToProfile({required ContactModel contact , int? index}) {
     Get.toNamed(NameRouts.contactProfile , arguments: {
-      'contact':contact,
+      'userId':contact.userId,
+      'profilePicture':contact.profilePicture,
+      'userName':contact.name,
       'index':index
     });
   }

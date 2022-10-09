@@ -76,7 +76,7 @@ class ContactProfileScreen extends StatelessWidget {
     return SliverAppBar(
       flexibleSpace: FlexibleSpaceBar(
         title: AutoSizeText(
-          controller.contact.name!,
+          controller.userName,
           maxLines: 1,
           maxFontSize: 16.0,
           minFontSize: 12.0,
@@ -87,7 +87,7 @@ class ContactProfileScreen extends StatelessWidget {
         background: Hero(
           tag: 'contactImage-${controller.index}',
           child: Image.network(
-            controller.contact.profilePicture!,
+            controller.profilePicture!,
             fit: BoxFit.cover,
           ),
         ),

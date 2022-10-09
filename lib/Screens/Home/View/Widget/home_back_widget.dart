@@ -40,12 +40,32 @@ class HomeBackWidget extends StatelessWidget {
                         Icons.settings,
                       ),
                       text: 'Setting',
+                      textColor: ColorUtils.textColor,
+                      func: (){
+
+                      },
                     ),
                     _buildMenuItem(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.info,
                       ),
                       text: 'Info',
+                      textColor: ColorUtils.textColor,
+                      func: (){
+
+                      },
+                    ),
+                    // Spacer(),
+                    _buildMenuItem(
+                      icon: Icon(
+                        Icons.logout,
+                        color: ColorUtils.mainColor,
+                      ),
+                      text: 'Log out',
+                      textColor: ColorUtils.mainColor,
+                      func: (){
+                        controller.showExitAlert();
+                      },
                     ),
                   ],
                 ),
@@ -60,33 +80,41 @@ class HomeBackWidget extends StatelessWidget {
   Widget _buildMenuItem({
     required Widget icon,
     required String text,
+    required Color textColor,
+    required Function func,
   }) {
-    return Container(
-      margin: paddingSymmetricV2,
-      width: Get.width,
-      height: Get.width * .1,
-      child: Row(
-        children: [
-          Expanded(
-            child: SizedBox(
-              width: double.maxFinite,
-              height: double.maxFinite,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: AutoSizeText(
-                  text,
-                  style: const TextStyle(
-                    fontSize: 14.0,
+    return InkWell(
+      onTap: (){
+        func();
+      },
+      child: Container(
+        margin: paddingSymmetricV2,
+        width: Get.width,
+        height: Get.width * .1,
+        child: Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: double.maxFinite,
+                height: double.maxFinite,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: AutoSizeText(
+                    text,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: textColor
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(
-            width: 8.0,
-          ),
-          icon
-        ],
+            const SizedBox(
+              width: 8.0,
+            ),
+            icon
+          ],
+        ),
       ),
     );
   }

@@ -12,7 +12,9 @@ import '../../NewChat/Model/contact_model.dart';
 class ContactProfileController extends GetxController {
   ProjectRequestUtils request = ProjectRequestUtils();
 
-  late final ContactModel contact;
+  late final int userId;
+  late final String userName;
+  late final String profilePicture;
   UserModel? model;
 
   RxBool isLoaded = false.obs;
@@ -21,14 +23,16 @@ class ContactProfileController extends GetxController {
 
   @override
   void onInit() {
-    contact = Get.arguments['contact'];
+    userId = Get.arguments['userId'];
+    userName = Get.arguments['userName'];
+    profilePicture = Get.arguments['profilePicture'];
     index = Get.arguments['index'];
     getContactData();
     super.onInit();
   }
 
   void getContactData() async {
-    request.getContactData(userId: contact.userId!).then((value) {
+    request.getContactData(userId: userId).then((value) {
       switch (value.statusCode) {
         case 200:
           {

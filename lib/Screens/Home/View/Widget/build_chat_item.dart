@@ -5,6 +5,9 @@ import 'package:rubymessanger/Const/ColorUtils.dart';
 import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
 import 'package:rubymessanger/Screens/Home/Model/chat_room_model.dart';
 
+import '../../../../Const/Consts.dart';
+import '../../../../Utils/view_utils.dart';
+
 class BuildChatItem extends StatelessWidget {
   const BuildChatItem({
     Key? key,
@@ -179,33 +182,35 @@ class BuildChatItem extends StatelessWidget {
                       child: SizedBox(
                         height: double.maxFinite,
                         width: double.maxFinite,
-                        // child: (chat.unreadMessage > 0)
-                        //     ? Container(
-                        //         margin: paddingAll4,
-                        //         decoration: BoxDecoration(
-                        //           color: Colors.red.shade800,
-                        //           borderRadius: radiusAll8,
-                        //           boxShadow: ViewUtils.shadow(
-                        //             offset: const Offset(
-                        //               0.0,
-                        //               -2.0,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //         child: Center(
-                        //           child: AutoSizeText(
-                        //             chat.unreadMessage.toString(),
-                        //             maxLines: 1,
-                        //             maxFontSize: 14.0,
-                        //             minFontSize: 10.0,
-                        //             style: const TextStyle(
-                        //               color: Colors.white,
-                        //               fontSize: 12.0,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       )
-                        //     : const SizedBox(),
+                        child: Obx(
+                          () => (chat.newMessage!.value > 0)
+                              ? Container(
+                                  margin: paddingAll4,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.shade800,
+                                    shape: BoxShape.circle,
+                                    boxShadow: ViewUtils.shadow(
+                                      offset: const Offset(
+                                        0.0,
+                                        -2.0,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: AutoSizeText(
+                                      chat.newMessage!.value.toString(),
+                                      maxLines: 1,
+                                      maxFontSize: 14.0,
+                                      minFontSize: 10.0,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ),
                       ),
                     ),
                   ],
@@ -226,13 +231,18 @@ class BuildChatItem extends StatelessWidget {
                         width: double.maxFinite,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: AutoSizeText(
-                            chat.name!,
-                            maxLines: 1,
-                            maxFontSize: 18.0,
-                            minFontSize: 12.0,
-                            style: const TextStyle(
-                              fontSize: 16.0,
+                          child: Obx(
+                            () => AutoSizeText(
+                              chat.name!,
+                              maxLines: 1,
+                              maxFontSize: 18.0,
+                              minFontSize: 12.0,
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: chat.newMessage!.value == 0
+                                    ? FontWeight.normal
+                                    : FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
