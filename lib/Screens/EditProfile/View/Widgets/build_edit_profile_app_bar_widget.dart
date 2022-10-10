@@ -81,7 +81,12 @@ class BuildEditProfileAppBarWidget extends StatelessWidget {
             PopupMenuButton<int>(
               offset: const Offset(0, 50),
               shape: const TooltipShape(),
-              onSelected: (item) {},
+              onSelected: (item) {
+                // print(item);
+                if(item == 1){
+                  controller.showExitAlert();
+                }
+              },
               icon: const Icon(
                 Icons.more_vert,
                 color: Colors.white,
@@ -91,7 +96,7 @@ class BuildEditProfileAppBarWidget extends StatelessWidget {
                   onTap: () {
                     print('num 1');
                   },
-                  value: 1,
+                  value: 0,
                   child: Row(
                     children: [
                       Icon(
@@ -107,7 +112,7 @@ class BuildEditProfileAppBarWidget extends StatelessWidget {
                 ),
                 PopupMenuItem<int>(
                   onTap: () {
-                    controller.showExitAlert();
+
                   },
                   value: 1,
                   child: Row(

@@ -75,7 +75,7 @@ class BuildMessageItemWidget extends StatelessWidget {
                           const SizedBox(
                             width: 8.0,
                           ),
-                        Obx(
+                        if(message.isMe)Obx(
                           () {
                             if (message.isSend.isTrue) {
                               return SizedBox(

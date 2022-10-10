@@ -31,13 +31,13 @@ class DeleteAvatarAlert extends StatelessWidget {
             height: Get.width * .3,
             width: Get.width * .3,
           ),
-          const AutoSizeText(
+          AutoSizeText(
             'Are you sure for delete your avatar ?',
             maxLines: 1,
             maxFontSize: 16.0,
             minFontSize: 12.0,
             style: TextStyle(
-              color: ColorUtils.textColor,
+              color:(Get.isDarkMode)?Colors.white: ColorUtils.textColor,
               fontSize: 14.0,
             ),
           ),

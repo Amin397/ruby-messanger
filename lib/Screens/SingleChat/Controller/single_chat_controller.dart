@@ -27,6 +27,8 @@ class SingleChatController extends GetxController
   int index = 0;
   int pvId = 0;
 
+  MessageModel? message;
+
   RxBool isSearchClicked = false.obs;
   RxBool isMessagesLoaded = false.obs;
   bool fromHome = false;
@@ -35,7 +37,7 @@ class SingleChatController extends GetxController
   TextEditingController messageTextController = TextEditingController();
 
   bool hasNext = false;
-  int limitMessage = 15;
+  int limitMessage = 30;
   int offsetMessage = 0;
 
   late final IOWebSocketChannel channel;
@@ -75,6 +77,7 @@ class SingleChatController extends GetxController
 
       channel.stream.listen((event) {
         socketModel = SocketMessageModel.fromJson(jsonDecode(event));
+        print(event);
         if (Blocs.user.user!.id != socketModel.userId) {
           if (!listOfMessages.any((element) => element.id == socketModel.id)) {
             listOfMessages.add(
@@ -103,6 +106,8 @@ class SingleChatController extends GetxController
               );
             });
           }
+        }else{
+          message!.isSend(true);
         }
       });
     } catch (e) {
@@ -203,8 +208,9 @@ class SingleChatController extends GetxController
   void sendMessage() async {
     String text = messageTextController.text;
     messageTextController.clear();
-    MessageModel message = MessageModel(
+    message = MessageModel(
       isMe: true,
+      id: listOfMessages.last.id! + 1,
       isSend: false.obs,
       text: text,
       userId: Blocs.user.user!.id,
@@ -229,7 +235,7 @@ class SingleChatController extends GetxController
     Future.delayed(const Duration(milliseconds: 1800), () {
       animationController.reset();
     });
-    listOfMessages.add(message);
+    listOfMessages.add(message!);
     update(['chatList']);
     update(['chatList']);
     request
@@ -241,7 +247,7 @@ class SingleChatController extends GetxController
       switch (value.statusCode) {
         case 201:
           {
-            message.isSend(true);
+            // message!.isSend(true);
             break;
           }
         case 600:

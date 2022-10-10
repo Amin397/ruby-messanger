@@ -84,6 +84,7 @@ class EditProfileController extends GetxController {
   }
 
   void showExitAlert() async {
+
     bool exit = await showDialog(
       context: Get.context!,
       builder: (BuildContext context) => const AlertDialog(
