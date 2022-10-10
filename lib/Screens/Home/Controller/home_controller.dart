@@ -235,12 +235,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void showExitAlert() async {
     bool exit = await showDialog(
       context: Get.context!,
-      builder: (BuildContext context) => AlertDialog(
+      builder: (BuildContext context) => const AlertDialog(
         contentPadding: EdgeInsets.zero,
         backgroundColor: Colors.transparent,
-        content: ExitAlert(
-          controller: this,
-        ),
+        content: ExitAlert(),
       ),
     );
 

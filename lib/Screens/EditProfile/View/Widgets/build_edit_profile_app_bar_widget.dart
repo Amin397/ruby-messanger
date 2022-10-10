@@ -106,19 +106,24 @@ class BuildEditProfileAppBarWidget extends StatelessWidget {
                   ),
                 ),
                 PopupMenuItem<int>(
-                  onTap: () {},
+                  onTap: () {
+                    controller.showExitAlert();
+                  },
                   value: 1,
                   child: Row(
                     children: [
                       Icon(
                         Icons.logout,
-                        color: (Get.isDarkMode) ? Colors.white30 : Colors.grey,
+                        color: ColorUtils.mainColor,
                       ),
                       SizedBox(
                         width: Get.width * .03,
                       ),
-                      const Text(
+                      Text(
                         'Log Out',
+                        style: TextStyle(
+                          color: ColorUtils.mainColor,
+                        ),
                       )
                     ],
                   ),
@@ -143,7 +148,6 @@ class BuildEditProfileAppBarWidget extends StatelessWidget {
   }
 
   Widget _buildUserData() {
-
     String date = '';
 
     date = DateFormat().format(Blocs.user.user!.lastLogin!);

@@ -112,6 +112,21 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
     );
   }
 
+  Future<http.Response> deleteAvatar() async {
+    return await makeHttpRequest(
+      webController: WebControllers.profile,
+      optionalWebMethod: WebControllers.user,
+      pathVariable: 'picture',
+      type: 'put',
+      body: {
+        'profile_picture': '',
+      },
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+    );
+  }
+
   Future<http.Response> getMessages({
     required int pvId,
     required int limit,

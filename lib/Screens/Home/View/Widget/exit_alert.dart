@@ -7,10 +7,9 @@ import 'package:rubymessanger/Screens/Home/Controller/home_controller.dart';
 
 
 class ExitAlert extends StatelessWidget {
-  const ExitAlert({Key? key , required this.controller}) : super(key: key);
+  const ExitAlert({Key? key }) : super(key: key);
 
 
-  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {

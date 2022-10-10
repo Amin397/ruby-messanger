@@ -12,12 +12,9 @@ class UserBloc {
   Stream get getStream => streamController.stream;
 
 
-
   UserModel? user;
   String accessToken = '';
   String refreshToken = '';
-
-
 
   void setUserData({required Map<String , dynamic> userData}){
     user = UserModel.fromJson(userData);
@@ -30,7 +27,7 @@ class UserBloc {
   }
 
   void removeUserProfileImage(){
-    user!.profilePicture = '';
+    user!.profilePicture = null;
     streamController.sink.add(user);
   }
 
