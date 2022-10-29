@@ -141,6 +141,28 @@ class RequestsUtil {
               }
               break;
             }
+          case 'delete':
+            {
+              try {
+                response = await http
+                    .delete(
+                  makePath(
+                    webMethod: webMethod,
+                    webController: webController,
+                    optionalController: optionalWebMethod,
+                    pathVariable: pathVariable,
+                    queryParameters: queryParameters,
+                  ),
+                  headers: headers,
+                )
+                    .timeout(const Duration(seconds: 40), onTimeout: () {
+                  return http.Response('Request time out', 600);
+                });
+              } catch (e) {
+                print(e);
+              }
+              break;
+            }
         }
       }
     } on SocketException catch (_) {

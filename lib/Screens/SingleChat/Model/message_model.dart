@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
@@ -17,7 +18,9 @@ class MessageModel {
     this.replyId,
     this.time,
     required this.isMe,
+    required this.isSelected,
     required this.isSend,
+    this.controller,
   });
 
   int? id;
@@ -31,7 +34,10 @@ class MessageModel {
   int? userId;
   bool isMe;
   RxBool isSend;
+  RxBool isSelected;
   dynamic replyId;
+  AnimationController? controller;
+
 
 
   static List<MessageModel> listFromJson(List data){
@@ -42,9 +48,12 @@ class MessageModel {
     var datetime = DateFormat(json["date_added"]).parse(json["date_added"] , true);
     var dateLocal = datetime.toLocal();
     String addTime = DateFormat.Hm().format(DateTime.parse(json["date_added"]).toLocal());
+
+
     return MessageModel(
       id: json["id"],
       text: json["text"],
+      isSelected: false.obs,
       time: addTime,
       isSend: true.obs,
       // time: DateFormat.Hms(DateTime.parse(json["date_added"])).toString(),

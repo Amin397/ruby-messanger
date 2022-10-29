@@ -1,13 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rubymessanger/Const/ColorUtils.dart';
-import 'package:rubymessanger/Const/Consts.dart';
 import 'package:rubymessanger/Screens/SingleChat/Controller/single_chat_controller.dart';
 
-class BuildNormalAppbarWidget extends StatelessWidget {
-  const BuildNormalAppbarWidget({Key? key, required this.controller})
-      : super(key: key);
+import '../../../../Const/ColorUtils.dart';
+import '../../../../Const/Consts.dart';
+import 'build_normal_appbar_widget.dart';
+
+class BuildMessageClickedAppBarWidget extends StatelessWidget {
+  const BuildMessageClickedAppBarWidget({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
 
   final SingleChatController controller;
 
@@ -21,27 +25,60 @@ class BuildNormalAppbarWidget extends StatelessWidget {
         height: Get.height * .07,
         width: Get.width,
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          // crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            _buildChatActions(),
-            _buildChatTitle(),
-            const SizedBox(
-              width: 8.0,
+            IconButton(
+              onPressed: () {
+                controller.deleteMessage();
+              },
+              icon: const Icon(
+                Icons.delete_forever,
+                color: Colors.white,
+              ),
             ),
-            _buildChatAvatar(),
+            Obx(
+              () => (controller.listOfMessages
+                          .where((element) => element.isSelected.isTrue)
+                          .length ==
+                      1)
+                  ? IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const SizedBox(),
+            ),
+            const Expanded(
+              child: SizedBox(
+                height: double.maxFinite,
+                width: double.maxFinite,
+              ),
+            ),
+            Obx(() => AutoSizeText(
+                  controller.listOfMessages
+                      .where((element) => element.isSelected.isTrue)
+                      .length
+                      .toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                )),
             Padding(
               padding: paddingAll4,
               child: IconButton(
                 onPressed: () {
-                  Get.back();
+                  controller.closeMessageClicked();
                 },
                 icon: const Icon(
-                  Icons.arrow_forward_ios_rounded,
+                  Icons.clear,
                   color: Colors.white,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -140,9 +177,9 @@ class BuildNormalAppbarWidget extends StatelessWidget {
   Widget _buildChatAvatar() {
     String avatar = '';
 
-    if(controller.fromHome){
+    if (controller.fromHome) {
       avatar = controller.roomModel!.avatar!;
-    }else{
+    } else {
       avatar = controller.userModel!.profilePicture!;
     }
 
@@ -154,7 +191,9 @@ class BuildNormalAppbarWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(100.0),
         child: (avatar.length > 5)
             ? Hero(
-                tag: (controller.fromHome)?'chatProfile-${controller.index}':'contactImage-${controller.index}',
+                tag: (controller.fromHome)
+                    ? 'chatProfile-${controller.index}'
+                    : 'contactImage-${controller.index}',
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100.0),
                   child: Image(
@@ -213,6 +252,7 @@ class BuildNormalAppbarWidget extends StatelessWidget {
       ),
     );
   }
+
   PopupMenuItem<int> _buildMuteOptions({
     required String text,
     required String icon,
@@ -238,57 +278,4 @@ class BuildNormalAppbarWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-class TooltipShape extends ShapeBorder {
-  const TooltipShape();
-
-  final BorderSide _side = BorderSide.none;
-  final BorderRadiusGeometry _borderRadius = BorderRadius.zero;
-
-  @override
-  EdgeInsetsGeometry get dimensions => EdgeInsets.all(_side.width);
-
-  @override
-  Path getInnerPath(
-    Rect rect, {
-    TextDirection? textDirection,
-  }) {
-    final Path path = Path();
-
-    path.addRRect(
-      _borderRadius.resolve(textDirection).toRRect(rect).deflate(_side.width),
-    );
-
-    return path;
-  }
-
-  @override
-  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    final Path path = Path();
-    final RRect rrect = _borderRadius.resolve(textDirection).toRRect(rect);
-
-    path.moveTo(0, 10);
-    path.quadraticBezierTo(0, 0, 10, 0);
-    path.lineTo(rrect.width - 50, 0);
-    path.lineTo(rrect.width - 15, -15);
-    path.lineTo(rrect.width - 10, 0);
-    path.quadraticBezierTo(rrect.width, 0, rrect.width, 10);
-    path.lineTo(rrect.width, rrect.height - 10);
-    path.quadraticBezierTo(
-        rrect.width, rrect.height, rrect.width - 10, rrect.height);
-    path.lineTo(10, rrect.height);
-    path.quadraticBezierTo(0, rrect.height, 0, rrect.height - 10);
-
-    return path;
-  }
-
-  @override
-  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {}
-
-  @override
-  ShapeBorder scale(double t) => RoundedRectangleBorder(
-        side: _side.scale(t),
-        borderRadius: _borderRadius * t,
-      );
 }

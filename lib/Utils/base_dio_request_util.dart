@@ -9,19 +9,27 @@ class BaseDioRequest {
     required WebMethods webMethod,
     required WebControllers webController,
     WebControllers? optionalWebMethod,
+    String? pathVariable,
     Object body = const {},
     Map<String, String> headers = const {},
     required String type,
   }) async {
     Dio dio = Dio();
     Response dioRes;
+    print('============== new request ===============send');
+    print(RequestsUtil.makePath(
+      webMethod: webMethod,
+      pathVariable: pathVariable,
+      webController: webController,
+      optionalController: optionalWebMethod,
+    ).toString());
     dioRes = await dio
         .post(
       RequestsUtil.makePath(
         webMethod: webMethod,
+        pathVariable: pathVariable,
         webController: webController,
         optionalController: optionalWebMethod,
-
       ).toString(),
       data: body,
       options: Options(
@@ -38,6 +46,7 @@ class BaseDioRequest {
         statusCode: 600,
       );
     });
+    print('============== new request ===============end');
 
     return dioRes;
   }

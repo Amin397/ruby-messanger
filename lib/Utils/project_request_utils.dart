@@ -212,6 +212,25 @@ class ProjectRequestUtils extends RequestsUtil with BaseDioRequest {
     );
   }
 
+  Future<Response> deleteMessages({
+    required List messagesId,
+    required String pvId,
+  }) async {
+    messagesId.forEach((element) {
+      print(element);
+    });
+    return await makeDioRequest(
+      webController: WebControllers.pv,
+      webMethod: WebMethods.message,
+      type: 'post',
+      pathVariable: '$pvId/delete',
+      headers: {
+        'Authorization': 'Bearer ${Blocs.user.accessToken}',
+      },
+      body: jsonEncode(messagesId),
+    );
+  }
+
   Future<http.Response> checkOtpCode({required String code}) async {
     return await makeHttpRequest(
       webMethod: WebMethods.submit_otp,

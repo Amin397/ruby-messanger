@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
 import 'package:rubymessanger/MainModel/GetRouts.dart';
@@ -15,6 +14,9 @@ import 'package:rubymessanger/Utils/project_request_utils.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
 
 class CompleteProfileController extends GetxController {
+
+
+
   ProjectRequestUtils request = ProjectRequestUtils();
   late final String userName;
   late final String mobile;

@@ -8,6 +8,7 @@ import 'package:rubymessanger/Screens/SingleChat/Controller/single_chat_controll
 import 'package:rubymessanger/Screens/SingleChat/View/Widget/build_normal_appbar_widget.dart';
 import 'package:rubymessanger/Utils/view_utils.dart';
 
+import 'build_message_clicked_app_bar_widget.dart';
 import 'build_search_bar_widget.dart';
 
 class SingleChatAppBarWidget extends StatelessWidget {
@@ -38,21 +39,37 @@ class SingleChatAppBarWidget extends StatelessWidget {
   }
 
   Widget _buildAppBarBody() {
-    return Obx(
-      () => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 200),
-        transitionBuilder: (widget, animation) => FadeTransition(
-          opacity: animation,
-          child: widget,
-        ),
-        child: (controller.isSearchClicked.isTrue)
-            ? BuildSearchBarWidget(
-                controller: controller,
-              )
-            : BuildNormalAppbarWidget(
-                controller: controller,
-              ),
-      ),
-    );
+
+    return Obx((){
+      if(controller.isMessageClicked.isTrue){
+        return BuildMessageClickedAppBarWidget(
+          controller:controller,
+        );
+      }else if(controller.isSearchClicked.isTrue){
+        return BuildSearchBarWidget(
+          controller: controller,
+        );
+      }else{
+        return BuildNormalAppbarWidget(
+          controller: controller,
+        );
+      }
+    });
+    // return Obx(
+    //   () => AnimatedSwitcher(
+    //     duration: const Duration(milliseconds: 200),
+    //     transitionBuilder: (widget, animation) => FadeTransition(
+    //       opacity: animation,
+    //       child: widget,
+    //     ),
+    //     child: (controller.isSearchClicked.isTrue)
+    //         ? BuildSearchBarWidget(
+    //             controller: controller,
+    //           )
+    //         : BuildNormalAppbarWidget(
+    //             controller: controller,
+    //           ),
+    //   ),
+    // );
   }
 }

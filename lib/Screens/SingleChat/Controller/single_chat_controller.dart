@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rubymessanger/Bloc/blocs.dart';
-import 'package:rubymessanger/MainModel/GetRouts.dart';
 import 'package:rubymessanger/MainModel/socket_message_model.dart';
 import 'package:rubymessanger/Screens/Home/Model/chat_room_model.dart';
 import 'package:rubymessanger/Utils/project_request_utils.dart';
@@ -30,6 +29,7 @@ class SingleChatController extends GetxController
   MessageModel? message;
 
   RxBool isSearchClicked = false.obs;
+  RxBool isMessageClicked = false.obs;
   RxBool isMessagesLoaded = false.obs;
   bool fromHome = false;
 
@@ -84,6 +84,7 @@ class SingleChatController extends GetxController
               MessageModel(
                 isMe: false,
                 id: socketModel.id,
+                isSelected: false.obs,
                 isSend: true.obs,
                 text: socketModel.text,
                 pvId: socketModel.pvId,
@@ -106,7 +107,7 @@ class SingleChatController extends GetxController
               );
             });
           }
-        }else{
+        } else {
           message!.isSend(true);
         }
       });
@@ -132,6 +133,14 @@ class SingleChatController extends GetxController
             listOfMessages =
                 MessageModel.listFromJson(jsonDecode(value.body)['result']);
             if (listOfMessages.isNotEmpty) {
+              listOfMessages.forEach((element) {
+                element.controller = AnimationController(
+                  vsync: this,
+                  duration: const Duration(milliseconds: 500),
+                  reverseDuration: const Duration(milliseconds: 500),
+                );
+              });
+
               Future.delayed(const Duration(milliseconds: 200), () {
                 scrollController.animateTo(
                   scrollController.position.maxScrollExtent + 70,
@@ -210,14 +219,21 @@ class SingleChatController extends GetxController
     messageTextController.clear();
     message = MessageModel(
       isMe: true,
-      id: listOfMessages.last.id! + 1,
+      id: (listOfMessages.isNotEmpty) ? listOfMessages.last.id! + 1 : 1,
       isSend: false.obs,
       text: text,
+      isSelected: false.obs,
       userId: Blocs.user.user!.id,
       dateAdded: DateTime.now(),
       isUnread: false,
       pvId: pvId,
+      controller: AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 500),
+        reverseDuration: const Duration(milliseconds: 500),
+      ),
     );
+    print(message!.id);
 
     if (listOfMessages.isNotEmpty) {
       scrollController.animateTo(
@@ -307,5 +323,116 @@ class SingleChatController extends GetxController
       ),
       curve: Curves.easeInOut,
     );
+  }
+
+  void selectMessage({required MessageModel message}) {
+    isMessageClicked(true);
+    if (isMessageClicked.isTrue) {
+      message.controller!
+        ..duration
+        ..forward();
+      message.isSelected(true);
+    }
+  }
+
+  void selectSingleMessage({required MessageModel message}) {
+    if (message.isSelected.isTrue) {
+      if (listOfMessages.where((element) => element.isSelected.isTrue).length ==
+          1) {
+        message.controller!
+          ..duration
+          ..reverse();
+        message.isSelected(false);
+        isMessageClicked(false);
+      } else {
+        message.controller!
+          ..duration
+          ..reverse();
+        message.isSelected(false);
+      }
+    } else {
+      message.controller!
+        ..duration
+        ..forward();
+      message.isSelected(true);
+    }
+  }
+
+  void closeMessageClicked() {
+    for (var element in listOfMessages) {
+      element.isSelected(false);
+      element.controller!
+        ..duration
+        ..reverse();
+    }
+
+    isMessageClicked(false);
+  }
+
+  void deleteMessage() async {
+    List<String> messageIds = [];
+
+    for (var element in listOfMessages) {
+      if (element.isSelected.isTrue) {
+        messageIds.add(element.id.toString());
+      }
+    }
+    request
+        .deleteMessages(pvId: pvId.toString(), messagesId: messageIds)
+        .then((value) {
+      print(value.statusCode);
+      switch (value.statusCode) {
+        case 204:
+          {
+
+            // message!.isSend(true);
+
+            for (var element1 in messageIds) {
+              listOfMessages
+                  .removeWhere((element) => element.id == int.parse(element1));
+            }
+
+            update(['chatList']);
+            isMessageClicked(false);
+
+            messageIds.clear();
+            break;
+          }
+        case 600:
+          {
+            ViewUtils.showError(
+              errorMessage: value.data,
+            );
+            break;
+          }
+        case 406:
+          {
+            ViewUtils.showError(
+              errorMessage: jsonDecode(value.data)['detail'],
+            );
+            break;
+          }
+        case 700:
+          {
+            ViewUtils.showError(
+              errorMessage: value.data,
+            );
+            break;
+          }
+        default:
+          {
+            ViewUtils.showError(
+              errorMessage: 'Something went wrong',
+            );
+            break;
+          }
+      }
+    });
+
+    // if(listOfMessages.where((element) => element.isSelected.isTrue).length > 1){
+    //
+    // }else{
+    //
+    // }
   }
 }

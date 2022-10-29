@@ -30,7 +30,7 @@ class SplashController extends GetxController {
         if (await StorageUtils.getUserAccessToken() != null) {
           getUserFullData();
         } else {
-          Get.offAndToNamed(NameRouts.registerLogin);
+
         }
       } else {
         Get.offAndToNamed(NameRouts.intro);
@@ -54,6 +54,11 @@ class SplashController extends GetxController {
         case 600:
           {
             isTimeOut(true);
+            break;
+          }
+        case 401:
+          {
+            Get.offAndToNamed(NameRouts.registerLogin);
             break;
           }
         case 700:
